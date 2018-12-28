@@ -189,11 +189,11 @@ sshd    6528 root    4u  IPv6  98744      0t0  TCP *:ssh (LISTEN)
 使用win下面的xshell putty scrt连接自己的虚拟机(这里我选用的是scrt，可以使用ifconfig获得自己虚拟机的ip地址)
 
 //在scrt中
-sudo su
+sudo su（必须在root权限下才能在根目录下创建文件夹
 cd /
 mkdir work
 然后修改work文件夹的权限
-chown -R forspy:forspy work/  (使他在普通用户下也能执行)
+chown -R forspy:forspy work/  (切换属主，使他在普通用户下也能执行)
 然后ls -l会发现使用者和创建者都会是普通用户而不是root
 (scrt中的中文乱码在选项里面-会话选项-外观-字符编码选择UTF-8)
 //远程操作sftp，进行传输(wind vsftp filezilla)
@@ -207,4 +207,12 @@ chown -R forspy:forspy work/  (使他在普通用户下也能执行)
 
 然后拖动文件就可以进行远程传输了
 */
+//使用su 用户名  切换回基本用户
+//使用useradd 用户名 添加用户名
+//使用passwd 密码 修改密码
+//ls -al 查看文件权限
+//drwxr-xr-x  2 forspy forspy    4096 10月 10 14:12  Desktop
+//d代表是文件夹 rwx(读写执行) 三组循环 对应root、用户组、其他用户的权限
+//-rw-r--r--  1 root   root        74 10月 10 15:18  main.c
+//代表是普通文件
 
