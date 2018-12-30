@@ -225,3 +225,5 @@ chown -R forspy:forspy work/  (切换属主，使他在普通用户下也能执�
  set encoding=utf-8
 */
 //linux切换输入法 windows键+空格
+//有时候我们贴过来的c文件里面有中文而终端堆中文的支持不是很好，这时候就在终端调整字符编码为简体中文GB18030
+//CLion是linux下集成的IDE，较为好用
