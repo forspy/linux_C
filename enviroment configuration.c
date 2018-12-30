@@ -224,3 +224,4 @@ chown -R forspy:forspy work/  (切换属主，使他在普通用户下也能执�
  set termencoding=utf-8
  set encoding=utf-8
 */
+//linux切换输入法 windows键+空格
