@@ -89,7 +89,7 @@ test:printf.o
 printf.o:printf.c
         gcc -c printf.c -o printf.o
 */
-/*多个文件的链接编译
+/*多个文件的链接编译 注意加Tab键
 test:test.o func.o
         gcc test.o func.o -o test
 test.o:test.c
