@@ -1,0 +1,102 @@
+//makefile中的变量定义
+//1.变量赋值
+//变量例如 OBJ=cerrexit.o connectsock.o  #然后就可以调用变量的依赖关系
+//还支持追加 OBJ+= connectTCP.o
+//target=telnet_client
+//2.变量使用
+//${target}:${OBJ}  ##说明telnet依赖这个变量里面的文件
+//	gcc ${OBJ} -o ${target}
+
+//-------ps命令赋值
+//为了在多种平台上运行makefile命令还可以对编译器命令经行重命名 
+//test := gcc  #把gcc命令改为test 
+//${target}:${OBJ}  
+//	${test} ${OBJ} -o ${target}
+//可以利用uname -a查看当前平台体系  另外cmake也可以自动识别平台版本
+//-------
+
+//3.伪目标
+//例如：删除所有中间文件.o以及目标文件
+//对于大型项目来说，实际上只需要${target}这个elf可执行文件不需要中间的.o文件，那么可以使用伪目标命令对这些.o文件进行批量删除
+/*
+RM := rm -rf #ps: rm是删除命令 -r是递归的去删除 -f是强制删除
+.PHONY
+clean:
+	${RM} ${OBJ} ${target}
+	echo "clean up"  #eaho 在linux的作用为打印 和Windows下的printf一样
+*/
+//执行的话只需要单独执行makefile下面的伪目标命令就行 
+//make clean #就只会执行clean命令，而不执行makefile中的其他命令 
+ 
+//4.定义可选参数
+/*
+DEFS = -D_POSIX_SOURCE #-D为宏定义条件编译，在编译过程中为代码添加_POSIX_SOURCE宏定义（或者说加一个-DDEBUG #DEBUG的宏定义） ps:_POSIX为文件接口标准 
+CFLAGS = -g ${DEFS} #-g为GDB调试用
+ps:gcc参数定义补充
+1.-l
+动态链接库.so（windows下为.dll）
+-l动态链接库的名字
+例如：
+LIB = -ltermcap #后面也可以继续加
+这样就将原来的makefile命令改写为
+${target}:${OBJ}  
+	gcc ${CFLAGS} ${OBJ} -o ${target} ${LIB}  #表示添加库文件 ${INCLUDE}  #INCLUDE表示第三方头文件
+*/
+
+//5.通配符
+/*
+linux里面的通配符
+%任意一个
+？匹配
+*所有
+makefile里面的通配符
+$@  代表目标文件
+$^  代表依赖文件
+$<  代表第一个依赖文件
+*/
+/*
+例1：可以对上面的makefile文件进一步变换
+${target}:${OBJ}
+gcc ${CFLAGS} %^ -o $@ ${LIB}    #%^ 为依赖文件 $@为目标文件
+例2：
+${target}:${OBJ}
+gcc ${CFLAGS} %^ -o $@ ${LIB}
+cerrexit.o:cerrexit.c     #cerrexit.o依赖于cerrexit.c
+gcc $^ -o $@
+connectsock.o:connectsock.c
+gcc $^ -o $@
+...
+*/
+
+//隐式规则
+/*
+因为linux其实直到依赖关系，所以可以进一步简化
+CC := gcc
+${target}:${OBJ}
+	${CC} ${CFLAGS} %^ -o $@ ${LIB}
+%.o:%.c     #cerrexit.o依赖于cerrexit.c   %表示任意一个.o都需要对应同名的.c  其实是.c代码中的include会帮助gcc去依赖
+	${CC} $^ -o $@
+*/
+
+//6.makefile脚本里面的函数
+//$(函数名 参数1 参数2 ...)
+SRC=$(wildcard *.c)  # wildcard *.c 表示去当前文件目录下的所有.c文件形成一个文件列表 wildcard是一个makfile函数
+OBJ=$(patsubset %.c,%.o,${SRC})  #表示将${SRC}变量中的任意一个.c后缀变成.o  patsubset会去遍历替换
+
+#调整之后的通用makefile文件为：
+target = hello  #[改]目标生成文件命名
+#获取当前目录下的所有c文件
+SRC = $(wildcard *.c)
+#将所有的.c 换成.o
+OBJ = $(patsubst %.c,%.o,$(SRC))
+DEFS = -D_POSIX_SOURCE  #[改]-D为宏定义条件编译
+FLAG= -g  #[改]可以使用${DEFS}
+CC = gcc   #[改]编译器方式
+LIB=      #[改]要添加的库文件 不加则为空格
+${target}:${OBJ}
+	${CC} ${FLAG} $^ -o $@ ${LIB}
+RM := rm -rf
+.PHONY:clean
+clean:
+	${RM} ${OBJ} ${target}
+	echo "clean up"
