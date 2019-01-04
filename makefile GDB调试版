@@ -9,10 +9,10 @@ SRC = $(wildcard *.c)
 #将所有的.c 换成.o
 OBJ = $(patsubst %.c,%.o,$(SRC))
 $(target):$(OBJ)
-	${CC} -o $@ $^ $(LIB)
+	$(CC) -o $@ $^ $(LIB)
 %.o:%.c
-	${CC} -g -c -o $@ $^
+	$(CC) -g -c -o $@ $^
 .PHONY:clean
 clean:
 	$(RM) $(OBJ) $(OBJGEN)
-	
+
