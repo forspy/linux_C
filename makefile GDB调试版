@@ -1,0 +1,18 @@
+DEFS = -D_POSIX_SOURCE
+CC =gcc
+RM = rm -rf
+FLAGS= -g -o 
+target= telnet
+LIB =
+#获取当前目录下的所有c文件
+SRC = $(wildcard *.c)
+#将所有的.c 换成.o
+OBJ = $(patsubst %.c,%.o,$(SRC))
+$(target):$(OBJ)
+	${CC} -o $@ $^ $(LIB)
+%.o:%.c
+	${CC} -g -c -o $@ $^
+.PHONY:clean
+clean:
+	$(RM) $(OBJ) $(OBJGEN)
+	
