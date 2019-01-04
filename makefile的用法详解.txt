@@ -100,3 +100,21 @@ RM := rm -rf
 clean:
 	${RM} ${OBJ} ${target}
 	echo "clean up"
+
+telnet_client编译过程中提示
+tcout.c:6:10: fatal error: curses.h: 没有那个文件或目录
+ #include <curses.h>
+          ^~~~~~~~~~
+解决方法：今天下载了树莓派内核源码，无法配置内核(make menuconfig)，提示“curses.h: 没有那个文件或目录”。
+
+解决办法：安装ncurses即可
+
+sudo apt-get install libncurses5-dev
+
+//附加知识：
+相信您在网路上一定用过如 tin,elm 等工具, 这些软体有项共同的特色, 即他们能利用上下左右等方向键来控制游标的位置. 
+除此之外, 这些程式的画面也较为美观. 对Programming 有兴趣的朋友一定对此感到好奇, 也许他能在 PC上用Turbo C轻易地写出类似的程式, 
+然而, 但当他将相同的程式一字不变地移到工作站上来编译时, 却出现一堆抓也抓不完的错误. 其实, 原因很简单, 他使用的函式库可能在 
+UNIX 上是没有定义的. 有些在 Turbo-C 上被广泛使用的一些函式, 可能在 UNIX 上是不被定义的. 为了因应网路上各式各样的终端机形态 
+(terminal), UNIX 上特别发展出一套函式库, 专门用来处理 UNIX 上游标移动及萤幕的显示. 这就是本篇文章要为您介绍的 - curses.h 函式库.
+ 利用这个函式库, 您也可以写出像 elm 般利用方向键来移动光棒位置的程式.
