@@ -54,7 +54,7 @@ gcc -v可以看gcc编译器的版本
 gcc -S hello.i -o hello.s  用vim打开.s文件可以看到汇编语法也就是说刚才的代码被解析成了汇编
 3.编译：将.s文件编译为.o文件
 gcc -c hello.s -o hello.o 编译为二进制机器码
-//chmod +x可以改变文件的执行权限
+//chmod +x可以改变文件的执行权限，有些时候当你发现一个程序运行不了，可以使用chmod a+x 程序名 进行提权
 所以 chmod +x hell.o 以后 ./hello.o相当于 gcc hello.c (使用gcc以后会产生一个a.out)
 然而：无法执行二进制文件: 可执行文件格式错 待解决  
 所以我们尝试使用gcc hello.c -o hello1.o输出能执行.o文件 ，这里待分析(已解决)
