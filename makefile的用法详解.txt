@@ -33,6 +33,7 @@ clean:
 DEFS = -D_POSIX_SOURCE #-D为宏定义条件编译，在编译过程中为代码添加_POSIX_SOURCE宏定义（或者说加一个-DDEBUG #DEBUG的宏定义） ps:_POSIX为文件接口标准 
 CFLAGS = -g ${DEFS} #-g为GDB调试用
 ps:gcc参数定义补充
+
 1.-l
 动态链接库.so（windows下为.dll）
 -l动态链接库的名字
