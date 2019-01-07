@@ -185,6 +185,6 @@ gdb 文件名 -x name.bp
 git clone https://github.com/gatieme/GdbPlugins.git ~/GdbPlugins
 
 echo "source ~/GdbPlugins/peda/peda.py" > ~/.gdbinit
-echo "source ~/GdbPlugins/gef/gef.py" > ~/.gdbinit
+echo source ~/.gdbinit-gef.py >> ~/.gdbinit
 
 GDB中的暂停/恢复程序
