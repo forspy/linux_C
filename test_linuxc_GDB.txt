@@ -1,0 +1,190 @@
+GDB是linux的调试器
+基于命令行的调式方法
+安装GDB增强工具
+GDB -v 查看当前GDB版本 7.7.1以上才能装增强工具 ，下面是GDB增强工具的安装gef，gef比GDB更友好一些
+wget -q -O- http://github.com//hugsy/gef/raw/master/scripts/gef.sh | sh
+实际上就是以下这些命令
+/*
+wget -q -O "$HOME/.gdbinit-gef.py" https://github.com/hugsy/gef/raw/master/gef.py
+test -f "$HOME/.gdbinit" && mv "$HOME/.gdbinit" "$HOME/.gdbinit.old"
+echo "source $HOME/.gdbinit-gef.py" > "$HOME/.gdbinit"
+exit 0
+*/
+如果在gef下面查看需要输入shell ls 同理进入也需要shell cd 因为ls、cd都是shell命令
+在GDB模式下按q退出
+使用cat 文件名.c可以快速看代码
+要使用GDB调试的话，必须使用gcc -g进行编译
+gdb target文件
+/*按照之前的make的方法在编译过程中不会-g,所以需要进一步修改makefile
+gcc       -c -o printf.o printf.c
+gcc    -g   printf.o -o telnet 
+*/
+1.首先 gdb 要调试的文件名 开始对该文件进行调试
+显示要调试的程序段，l(list) 函数名比如l main(或者list main) 默认看这个函数的上下5行 可以使用set listsize 行数 进行调整
+也可以按照行数去显示l(list) 行数 比如l 3  或者l printf.c:3
+下端点 b(break) 行数/函数名 比如b 5 也可以b printf.c:3
+显示断点信息 info b
+开始调试按r
+gef➤  r
+Starting program: /home/forspy/linuxc/test/telnet 
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────── registers ────//表示寄存器的地址，共15个通用寄存器
+$rax   : 0x000055555555463a  →  <main+0> push rbp//rbp为栈顶指针
+$rbx   : 0x0               
+$rcx   : 0x0000555555554660  →  <__libc_csu_init+0> push r15//传第4个参数
+$rdx   : 0x00007fffffffe4f8  →  0x00007fffffffe74c  →  "LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so[...]"//传第3个参数
+$rsp   : 0x00007fffffffe400  →  0x0000555555554660  →  <__libc_csu_init+0> push r15
+$rbp   : 0x00007fffffffe400  →  0x0000555555554660  →  <__libc_csu_init+0> push r15
+$rsi   : 0x00007fffffffe4e8  →  0x00007fffffffe72c  →  "/home/forspy/linuxc/test/telnet" //传第二个参数的寄存器agrv
+$rdi   : 0x1               //传第一个参数的寄存器argc
+$rip   : 0x000055555555463e  →  <main+4> lea rdi, [rip+0x9f]        # 0x5555555546e4
+$r8    : 0x00007ffff7dd0d80  →  0x0000000000000000//第5个参数
+$r9    : 0x00007ffff7dd0d80  →  0x0000000000000000//第6个参数，其他的参数存放在栈中
+$r10   : 0x0               
+$r11   : 0x0               
+$r12   : 0x0000555555554530  →  <_start+0> xor ebp, ebp
+$r13   : 0x00007fffffffe4e0  →  0x0000000000000001
+$r14   : 0x0               
+$r15   : 0x0               
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow resume virtualx86 identification]//状态寄存器
+$cs: 0x0033//程序计数段 $ss: 0x002b//当前代码段 $ds: 0x0000//内核代码段 $es: 0x0000 $fs: 0x0000 $gs: 0x0000 
+────────────────────────────────────────────────────────────────────────────────── stack ────//栈的状态
+0x00007fffffffe400│+0x0000: 0x0000555555554660  →  <__libc_csu_init+0> push r15  ← $rsp, $rbp//rbp栈底指针 rsp栈顶指针
+0x00007fffffffe408│+0x0008: 0x00007ffff7a05b97  →  <__libc_start_main+231> mov edi, eax
+0x00007fffffffe410│+0x0010: 0x0000000000000001
+0x00007fffffffe418│+0x0018: 0x00007fffffffe4e8  →  0x00007fffffffe72c  →  "/home/forspy/linuxc/test/telnet"
+0x00007fffffffe420│+0x0020: 0x0000000100008000
+0x00007fffffffe428│+0x0028: 0x000055555555463a  →  <main+0> push rbp
+0x00007fffffffe430│+0x0030: 0x0000000000000000
+0x00007fffffffe438│+0x0038: 0xc02f9d8bb9d3f63c//栈顶指针
+──────────────────────────────────────────────────────────────────────────── code:x86:64 ────//汇编语句
+   0x555555554635 <frame_dummy+5>  jmp    0x5555555545a0 <register_tm_clones>
+   0x55555555463a <main+0>         push   rbp
+   0x55555555463b <main+1>         mov    rbp, rsp
+ → 0x55555555463e <main+4>         lea    rdi, [rip+0x9f]        # 0x5555555546e4
+   0x555555554645 <main+11>        call   0x555555554510 <puts@plt>
+   0x55555555464a <main+16>        mov    eax, 0x0
+   0x55555555464f <main+21>        pop    rbp
+   0x555555554650 <main+22>        ret    
+   0x555555554651                  nop    WORD PTR cs:[rax+rax*1+0x0]
+────────────────────────────────────────────────────────────────────── source:printf.c+5 ────//执行的源码
+      1  #include<stdio.h>
+      2  
+      3  int main()
+      4  {
+ →    5         printf("hi\n");
+      6         return 0;
+      7  }
+      8  
+──────────────────────────────────────────────────────────────────────────────── threads ────//程序运行的状态(线程)teach ID号可以调试不同的线程
+[#0] Id 1, Name: "telnet", stopped, reason: BREAKPOINT
+────────────────────────────────────────────────────────────────────────────────── trace ────//程序调用栈
+[#0] 0x55555555463e → main()
+─────────────────────────────────────────────────────────────────────────────────────────────
+
+Breakpoint 1, main () at printf.c:5
+5               printf("hi\n");
+//单步，继续下一步按s，当按完s以后什么都不输入直接回车也会执行上一条命令gef➤  s即自动往下调试
+gef➤  s
+//单步，n(next) 直接运行这个函数而不进入
+gef➤  n
+//显示某个变量的值，显示十六进制的值
+gef➤  p 变量
+//打印所有局部变量
+gef➤  info locals
+//跟踪某个变量的值，取消undisplay
+gef➤  display 变量名
+//给断点执行命令 （可以写脚本，很强大）
+gef➤  commands 断点编号
+可以看到变为> 比如：>print result 或者 print result*1000 或者echo 最后加上>end 
+//跳到下一个断点或者按c
+gef➤ continue(c)
+//运行到某一行/函数
+gef➤ call 行/函数
+//退出当前调试的函数，并返回 
+gef➤ finish
+//切出GDB调试
+gef➤ crtl+z
+//在切出去的情况下按fg切回GDB(也可以fg 1/2/3表示后台第几个任务 可以通过jobs看第几个进程)
+//取消断点
+gef➤ delete b 断点号(利用info b查看断点号)
+//条件调式，比如在循环中要看for(int i=0;i<100;i++) 第97个i的时候就是让它连续continue调试97次
+gef➤ b 行号 if i==97
+//修改条件断点的条件
+condition 断点号 变量i==90
+//bt查看栈
+gef➤ bt
+
+//查看栈的变量/栈内详细信息
+gef➤frame 栈号
+//查看栈内更详细的信息
+gef➤info frame 栈号
+比如rbp表示栈底指针标记了入站的地址也就是返回的地址  rsp栈顶指针变量从栈顶进来
+
+//查看内存 比如看一个数组的前十个内存值 x/10 数组地址
+gef➤ x
+退出循环/快速运行完循环
+gef➤until linenum
+打印数组/变量   重要
+gef➤ print *数组名@个数     全局变量打印 print file::变量名    局部变量打印  print 变量名 
+//查看当前局部变量
+gef➤info locals
+//观察一个变量的内存(需要在run了以后观察)，如果该变量变化则程序会断点到watch位置
+gef➤watch 变量名/地址，针对密码破解
+//如果这个内存被读取，就断在这儿
+gef➤rwatch 变量名/地址
+//抛出异常时断掉，针对c++程序
+gef➤catch throw
+//捕捉异常时断掉，针对c++程序
+gef➤catch catch
+//调用程序时(linuxc系统程序，在调用程序时会启用exec)断掉  针对漏洞和木马
+gef➤catch exec
+//开辟进程(fork)时停止，进程就像是一个大厦、线程就好像里面的公司
+gef➤catch fork
+//load/load libname 载入动态链接库(.so)的时候断掉  比如：调用其他部门的库、dll注入 所以一般病毒的注入要涉及提权
+gef➤catch load/load libname
+//查看的方法都一致info breakpoints/watchpoints/catchpoints
+
+GDB启动方法
+1.本地启动
+gdb 程序名
+2.本地 段错误文件启动
+gdb 文件名 core
+3.attch启动(ps -A查看进程)
+gdb 文件名<program> <PID>(进程号) 需要root权限
+介绍：如果你的程序是一个服务程序，那么你可以指定这个服务运行时的进程ID。GDB会自动attach上去，并调试它。program应该在PATH环境变量中搜索得到
+例如： gef➤attach 1771
+tips：ps -ef|grep 进程名
+tips:读取符号表 readelf -s 文件名
+ls -al 文件名 可以看文件的详细信息
+-----防破解机制
+一个程序exe/elf启动以后，先从库里面加载文件pe头的导入表里面读出来
+1.加壳反调试防破解
+2.可以使用strip 文件名 剥离符号表 这样使用GDB调试的时候就看不到程序源码
+生成发布程序的方法：如下
+生成符号表：
+objcopy --only-keep-debug telnet telnet.symbol
+发布程序(剥离符号表)
+objcopy --strip-debug telnet telnet-release
+利用加载符号表的方式调试release版本
+gdb --symbol=telnet.symbol --exec=telnet-release    这样就能使用gef➤list 查看代码了
+因此 gdb +符号表+发布的程序就能看到源码
+4.远程启动
+gdbserver 0.0.0.0：1234 文件路径
+
+GDB传入参数
+set args 参数
+传入参数的前提是int main(int agrc,char* agrv[])  int main()传入不了参数
+看传入的参数比如： p* argv@5
+show path 查看当前函数的运行路径
+
+保存/读取断点
+save breakpoint name.bp
+gdb 文件名 -x name.bp
+//不管是gef/peda都是gdb的插件，peda在破解的时候用的多一点 可以装一个，然后使用前按照2/3语句进行切换
+git clone https://github.com/gatieme/GdbPlugins.git ~/GdbPlugins
+
+echo "source ~/GdbPlugins/peda/peda.py" > ~/.gdbinit
+echo "source ~/GdbPlugins/gef/gef.py" > ~/.gdbinit
+
+GDB中的暂停/恢复程序
