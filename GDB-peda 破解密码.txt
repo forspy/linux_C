@@ -1,0 +1,14 @@
+GDB项目实战
+int main(int agrc,char* agrv[])
+{
+...
+//参数解析函数
+getopt(argc,argv,"c:i:");//c i对应main里面传入的参数，传参方式比如./gdb_seg -c参数1 -i参数2
+}
+//段错误会产生core文件
+//可以对core文件进行段错误调式 段错误的产生原因为访问了不该访问的内存 
+
+//有些时候当你发现一个程序运行不了，可以使用chmod a+x 程序名 进行提权
+file .elf文件 看一个文件的属性 
+readelf -s .elf文件 看符号表 如果有符号表就可以使用GDB进行调试查看代码
+strings .elf文件 查看当前文件源码的所有字符串
