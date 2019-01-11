@@ -29,7 +29,7 @@ gef➤  r
 Starting program: /home/forspy/linuxc/test/telnet 
 [ Legend: Modified register | Code | Heap | Stack | String ]
 ────────────────────────────────────────────────────────────────────────────── registers ────//表示寄存器的地址，共15个通用寄存器
-$rax   : 0x000055555555463a  →  <main+0> push rbp//rbp为栈底指针
+$rax   : 0x000055555555463a  →  <main+0> push rbp//rbp为栈底指针，也是返回的出口
 $rbx   : 0x0               
 $rcx   : 0x0000555555554660  →  <__libc_csu_init+0> push r15//传第4个参数
 $rdx   : 0x00007fffffffe4f8  →  0x00007fffffffe74c  →  "LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so[...]"//传第3个参数
