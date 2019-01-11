@@ -1,0 +1,9 @@
+IDA获得main函数的入口地址
+然后b *main函数的入口地址
+需要会一点汇编 比如push 代表压栈 mov表示保存栈 sub分配栈
+在peda里面找到code栏里面的call 
+并且registers 里面有你输入的函数
+然后s进到这个函数里面
+print $eax=0表示strcmp(输入，密码)=0就表示成功 人为改掉判定的条件  $eax表示寄存器变量
+造壳 gcc -o elfa elf32_main.c 
+通过./elfa +.elf文件进行加壳处理
