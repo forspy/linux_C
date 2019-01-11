@@ -181,10 +181,10 @@ show path 查看当前函数的运行路径
 保存/读取断点
 save breakpoint name.bp
 gdb 文件名 -x name.bp
-//不管是gef/peda都是gdb的插件，peda在破解的时候用的多一点 可以装一个，然后使用前按照2/3语句进行切换，需要root用户才能切换
+//不管是gef/peda都是gdb的插件，peda在破解的时候用的多一点 可以装一个，然后使用前按照2/3语句进行切换
 git clone https://github.com/gatieme/GdbPlugins.git ~/GdbPlugins
 
 echo "source ~/GdbPlugins/peda/peda.py" > ~/.gdbinit
-echo source ~/.gdbinit-gef.py >> ~/.gdbinit
+echo "source ~/GdbPlugins/gef/gef.py" > ~/.gdbinit
 
 GDB中的暂停/恢复程序
