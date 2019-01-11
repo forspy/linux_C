@@ -10,5 +10,21 @@ getopt(argc,argv,"c:i:");//c i对应main里面传入的参数，传参方式比�
 
 //有些时候当你发现一个程序运行不了，可以使用chmod a+x 程序名 进行提权
 file .elf文件 看一个文件的属性 
-readelf -s .elf文件 看符号表 如果有符号表就可以使用GDB进行调试查看代码
+readelf -s .elf文件 看符号表 如果有符号表就可以使用GDB进行调试查看代码  重要
 strings .elf文件 查看当前文件源码的所有字符串
+使用gdb-peda进行调试
+gdb-peda$aslr 表示内存地址随机化 默认aslr为off 因此可以在peda里面设置aslr on来防止别人破解你的程序
+gdb-peda$checksec 检查安全机制
+CANARY    : disabled 地址随机化
+FORTIFY   : disabled堆保护
+NX        : ENABLED //表示栈不可执行，如果开启了表示只能执行代码段里面的程序 如果没开起来，也可以执行栈或者堆里面的程序
+PIE       : disabled内存保护
+RELRO     : FULL栈保护所
+//查看elf头
+gdb-peda$elfheader
+//找代码段里面的文件  find
+gdb-peda$ find(需要运行起来，并且在断点前面)
+//通过readelf -s .elf文件(或者strings)某些函数然后call 这个函数
+gdb-peda$call 函数名
+//也可以b strcmp函数表示密码匹配
+//如果没有符号表 需要使用IDA PRO进行联调
