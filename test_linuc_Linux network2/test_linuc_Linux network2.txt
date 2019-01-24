@@ -4,7 +4,62 @@ socket模型
 数据包套接字 UCP
 原始套接字 raw(包括各种私有协议 )
 
-TCP三次握手
+
 icmp协议 -ping 和traceroute等都基于icmp协议
 
 元数据
+
+socket-TCP模型(TCP面向连接/UDP不面向连接只负责发送)
+TCP服务器端：socket()-bind()-listen()-accept()-阻塞直到服务器有客户端连接-read()-处理请求-write()-read()-close()
+TCP客户端：socket()-connect()-write()-read()-close()
+
+TCP部分
+TCP服务器端建立监听句柄
+socket部分：
+1.创建一个协议簇（IPV4(AF_INET)/IPV6(AP_INET6)/本地套接字AF_LOCAL/路由套接字AF_ROUTE）
+2.套接字类型
+TCP流式套接字SOCK_STREAM
+UDP数据段套接字SOCK_DGRAM
+原始套接字SOCK_RAW
+3.协议
+标准TCP IPPROTO_TCP
+标准UDP IPPTOTO_UDP
+非标准协议
+IPPROTO_STCP
+IPPROTO_TIPC
+socket本质上就是一个库，封装好了阻塞 三次握手等一些功能，调用即可
+注：三次握手-建立连接之前先进行试触
+第一次
+第一次握手：建立连接时，客户端发送syn包（syn=j）到服务器，并进入SYN_SENT状态，等待服务器确认；SYN：同步序列编号（Synchronize Sequence Numbers）。
+第二次
+第二次握手：服务器收到syn包，必须确认客户的SYN（ack=j+1），同时自己也发送一个SYN包（syn=k），即SYN+ACK包，此时服务器进入SYN_RECV状态；
+第三次
+第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=k+1），此包发送完毕，客户端和服务器进入ESTABLISHED（TCP连接成功）状态，完成三次握手。
+完成三次握手，客户端与服务器开始传送数据
+//服务器端运行流程
+socket()函数
+int  socket(int protofamily, int type, int protocol);//返回sockfd
+bind()函数		
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+//监听
+int listen(int sockfd, int backlog);
+//连接
+int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+//接受(从监听句柄上获得链接句柄)是一个阻塞函数，等待来自客户端的信息
+int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen); //返回连接connect_fd
+
+客户端
+socket()函数
+int  socket(int protofamily, int type, int protocol);//返回sockfd
+//连接
+int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+
+服务器（因为socket可以看成一个文件，因此可以使用文件的读写来查看/修改消息）
+TCP套接字
+•	read()/write()
+•	recvmsg()/sendmsg()
+ ssize_t read(int fd, void *buf, size_t count);
+ ssize_t write(int fd, const void *buf, size_t count);
+
+UDP套接字
+•	recvfrom()/sendto()
