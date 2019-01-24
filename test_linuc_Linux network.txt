@@ -1,9 +1,10 @@
 Linux网络编程
 1.网络协议
-链路层：以太网驱动程序
-IP层： IPV4/IPV6  ARP RARP
-传输层：UDP TCP ICMP
-应用层：HTTP FTP SMTP POP3
+链路层：以太网驱动程序 ARP RARP
+IP层： IPV4/IPV6 ICMP
+传输层：UDP TCP 
+socket抽象层：
+应用层：HTTP FTP SMTP POP3...QQ等用户进程
 网络数据分析：Wireshark网络分析器 
 协议图（静态 动态）
 网络安全的基础是了解协议
