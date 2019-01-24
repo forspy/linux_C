@@ -29,7 +29,7 @@ gef➤  r
 Starting program: /home/forspy/linuxc/test/telnet 
 [ Legend: Modified register | Code | Heap | Stack | String ]
 ────────────────────────────────────────────────────────────────────────────── registers ────//表示寄存器的地址，共15个通用寄存器
-$rax   : 0x000055555555463a  →  <main+0> push rbp//rbp为栈底指针，也是返回的出口
+$rax   : 0x000055555555463a  →  <main+0> push rbp//rbp为栈底指针
 $rbx   : 0x0               
 $rcx   : 0x0000555555554660  →  <__libc_csu_init+0> push r15//传第4个参数
 $rdx   : 0x00007fffffffe4f8  →  0x00007fffffffe74c  →  "LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so[...]"//传第3个参数
@@ -182,9 +182,19 @@ show path 查看当前函数的运行路径
 save breakpoint name.bp
 gdb 文件名 -x name.bp
 //不管是gef/peda都是gdb的插件，peda在破解的时候用的多一点 可以装一个，然后使用前按照2/3语句进行切换
-git clone https://github.com/gatieme/GdbPlugins.git ~/GdbPlugins
 
-echo "source ~/GdbPlugins/peda/peda.py" > ~/.gdbinit
-echo "source ~/GdbPlugins/gef/gef.py" > ~/.gdbinit
 
+peda安装：
+git clone https://github.com/longld/peda.git ~/peda
+echo "source ~/peda/peda.py" >> ~/.gdbinit   
+切换的时候使用echo "source ~/peda/peda.py" >> ~/.gdbinit 
+gef安装：
+安装：
+$ wget -q -O- https://github.com/hugsy/gef/raw/master/gef.sh | sh
+$ wget -O ~/.gdbinit-gef.py -q https://github.com/hugsy/gef/raw/master/gef.py
+$ echo source ~/.gdbinit-gef.py >> ~/.gdbinit
+切换的时候使用echo source ~/.gdbinit-gef.py >> ~/.gdbinit
+
+
+访问 vi ~/.gdbinit查看环境变量  在需要使用peda的时候在需要删掉 gef的环境变量
 GDB中的暂停/恢复程序
