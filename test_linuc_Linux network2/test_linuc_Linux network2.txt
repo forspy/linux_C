@@ -1,0 +1,10 @@
+wireshark网络数据抓包
+socket模型
+流套接字 TCP
+数据包套接字 UCP
+原始套接字 raw(包括各种私有协议 )
+
+TCP三次握手
+icmp协议 -ping 和traceroute等都基于icmp协议
+
+元数据
