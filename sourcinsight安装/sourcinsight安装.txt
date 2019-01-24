@@ -1,0 +1,18 @@
+sourceinsight安装
+1.project-openproject
+找到base目录进入文件夹把插件复制进去
+2.project-add and remove project files...
+点击base 看到新插件 加载后，点击project-Synchronize files
+3.设置快捷键
+option-key assign 
+搜索comment 
+4.创建项目
+先在某处创建一个文件夹 然后进入这个文件夹比如socket_test 复制路径
+点击project-newproject 就会在这个文件夹socket_test下面导入linux的一些环境库  然后close
+5.加入文件
+在soket_test文件夹外面建立或者黏贴一些.c代码加入项目
+点击project-add and remove project files...
+双击这些文件添加进去 close
+点击project-Synchronize files 完成
+6.只能写不能编译 在linux下编译
+7.双击TabSiHost.exe安装sourceinsight小插件

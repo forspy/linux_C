@@ -1,0 +1,18 @@
+[1510]
+Fixed : 在某些 Windows XP SP2升级到SP3的系统中指令异常导致Source Insight意外中止
+New   : 在Windows 7系统上测试通过，支持32位和64位Windows 7
+
+
+[1490]
+Fixed : 一般选项对话框中“SIlocation”总是空的问题
+Fixed : 文件切换时已经打开的文件被重新定位到文件开始位置的问题
+New : 添加文件只读属性菜单
+New : 添加系统菜单
+Fixed : 文件没有保存而窗口被关闭的问题
+Fixed : 修改C/C++文件切换搜索目录可以重复添加的问题
+Fixed : 修改搜索目录添加方式，更方便使用
+Fixed : Search Result标签显示错误问题
+Fixed : 修改文件名匹配顺序，CPP/H文件切换速度更快，匹配更准确
+New : 修改搜索路径管理方式，支持递归搜索
+New : 添加Source Control支持，支持多个Provider切换
+
