@@ -48,13 +48,12 @@ int main(int argc,char *argv[])
         perror("creat socket error\n");
         return 1;
     }
-	//绑定
+	//2.bind 绑定地址
     struct sockaddr_in local;  //sockaddr_in有很多字段，能够辅助你的设置 到时候将sockaddr_in* 强转为sockaddr*即可
     local.sin_family = AF_INET;
     local.sin_port = htons(atoi(argv[2]));//htons把本地字节序转换成网络字节序(字节序存在大端/小端之分，本地和网络不一样)atoi因为端口是通过参数argv[]传进来的，需要转化成int
     local.sin_addr.s_addr = inet_addr(argv[1]);//inet_addr将点分十进制转化为网络用的int地址192.168.1.1-->19216811
 
-    //2.bind
 
     if(bind(sock,(struct sockaddr*)&local,/*生成需要绑定地IP地址*/sizeof(local)) < 0){
         perror("bind error\n");
