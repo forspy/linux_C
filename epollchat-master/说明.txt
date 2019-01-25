@@ -1,0 +1,2 @@
+需要chmod a+x HyperMegaChatProgramServer.out进行提权
+./HyperMegaChatProgramServer.out 即可
