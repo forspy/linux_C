@@ -1,0 +1,21 @@
+epoll机制
+		 poll select  ---》受到fd的上限限制
+		 fd-------》struct file;
+		 epoll 机制解决了以上问题，并发性高 能够支持超过10k的链接 C10K  大规模并发服务框架epoll+threadpool+mysql
+		 C10K  IO通信模块  数据处理模块  数据存储模块
+		 IO通信模块  ---epoll 
+		 数据处理模块 ----- 多进程多线程  AIO机制
+		epoll ----->fd--->事件   epoll_event  epoll的特点就是把fd抽象成了event事件
+		//创建epoll句柄 并且设置当前句柄监听事件个数
+		//创建epollfd对象 并设置epollfd对象
+		int epollfd=epoll_creat(10000);//epollfd是一个对象
+		//设置epoll_event对象
+		struct epoll_event epoll_event;
+		epoll_event.events=EPOLLIN;
+		epoll_event.fd = scvfd
+		//将当前事件加入到epollfd的监听链表中
+		epoll_ctl(epollfd,EPOLL_CTL_ADD,scvfd,&epoll_event);//关联fd和event真正形成抽象
+		struct epoll_event evs[10000];
+		//使用epollfd对象
+		epoll_wait(epollfd，evs，事件个数，超时时间);
+		evs.event EPOLLIN EPOLLOUT
