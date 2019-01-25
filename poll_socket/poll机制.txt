@@ -1,0 +1,74 @@
+IO复用模型2  poll机制
+1.分析和已有模型的区别
+select --->fd_set包含需要进行IO复用的句柄 
+poll  ---->pollfd包含需要进行IO复用的句柄  pollfd句柄链表   句柄链表的头 
+2.做框架设计
+struct pollfd{
+	int fd;  //当前的处理句柄
+	short events; 句柄关心的事件
+	short revents;
+}
+event
+/* These are specified by iBCS2 */
+#define POLLIN		0x0001
+#define POLLPRI		0x0002
+#define POLLOUT		0x0004
+#define POLLERR		0x0008
+#define POLLHUP		0x0010
+#define POLLNVAL	0x0020
+
+/* The rest seem to be more-or-less nonstandard. Check them! */
+#define POLLRDNORM	0x0040
+#define POLLRDBAND	0x0080
+#ifndef POLLWRNORM
+#define POLLWRNORM	0x0100
+#endif
+#ifndef POLLWRBAND
+#define POLLWRBAND	0x0200
+#endif
+#ifndef POLLMSG
+#define POLLMSG		0x0400
+#endif
+#ifndef POLLREMOVE
+#define POLLREMOVE	0x1000
+#endif
+#ifndef POLLRDHUP
+#define POLLRDHUP       0x2000
+#endif
+
+#define POLLFREE	0x4000	/* currently only for epoll */
+
+#define POLL_BUSY_LOOP	0x8000
+
+
+revents 回复事件
+事件返回指针 	
+struct pollfd;
+pollfd.fd
+pollfd.event
+poll(int pollfd,int num,struct time);
+revents
+
+
+fd_set  pollfd
+
+	
+epoll机制
+		 poll select  ---》受到fd的上限限制
+		 fd-------》struct file;
+		 epoll 机制解决了以上问题，能够支持超过10k的链接 C10K
+		 C10K  IO通信模块  数据处理模块  数据存储模块
+		 IO通信模块  ---epoll 
+		 数据处理模块 ----- 多进程多线程  AIO机制
+		epoll ----->fd--->事件   epoll_event
+		//创建epoll句柄 并且设置当前句柄监听事件个数
+		int epollfd=epoll_creat(10000);
+		struct epoll_event epoll_event;
+		epoll_event.events=EPOLLIN;
+		epoll_event.fd = scvfd
+		//将当前事件加入到epollfd的监听链表中
+		epoll_ctl(epollfd,EPOLL_CTL_ADD,scvfd,&epoll_event);
+		struct epoll_event evs[10000];
+		epoll_wait(epollfd，evs，事件个数，超时时间);
+		evs.event EPOLLIN EPOLLOUT
+		
