@@ -1,0 +1,22 @@
+Linux I/O复用
+思路：单个fd来占用I/O浪费资源，使用多个socket的fd句柄来监听IN/OUT的情况
+方法：
+select --少量fd句柄
+poll--过渡
+epoll--大量fd句柄
+
+select I/O复用方法：
+对象->fd_set 文件集合
+struct fd_set
+分配 struct fd_set rdfs;
+设置
+初始化 FD_ZERO(&rdfs);
+放入fd文件夹 FD_SET(FD,&rdfs);
+移除fd句柄 FD_CLR(int fd,fd_set* set);
+I/O复用流程
+1.int select();主方法，首先进行select等待 文件集合中的任意一个fd返回，fd为监听句柄
+2.struct timeval* timeout;时间阻塞
+2.2int FD_ISSET();在多个fd返回的情况下，确定fd对应的情况
+3.返回后accept()，accept()接受后返回链接句柄，然后将accept的监听句柄参数放入fd_set文件集合，将accept的链接句柄进行读写操作
+注意：每次重新发起select时，需要重新初始化 放入
+
