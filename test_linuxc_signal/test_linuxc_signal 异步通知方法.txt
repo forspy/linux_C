@@ -9,7 +9,7 @@ Signal 异步通知方法
 电报机
 Linux中的信号
 #define SIGHUP         1
-#define SIGINT         2
+#define SIGINT         2 //ctrl-c 终止一个进程；进程无法再重续
 #define SIGQUIT         3
 #define SIGILL         4
 #define SIGTRAP         5
@@ -27,7 +27,7 @@ Linux中的信号
 #define SIGSTKFLT    16
 #define SIGCHLD        17
 #define SIGCONT        18
-#define SIGSTOP        19
+#define SIGSTOP        19   //ctrl+z 常用于挂起一个进程。进程从前台转入后台并暂停，可以用bg使其后台继续运行，fg使其转入前台运行。
 #define SIGTSTP        20
 #define SIGTTIN        21
 #define SIGTTOU        22
@@ -57,9 +57,9 @@ Linux中的信号
 捕获信号
 屏蔽信号
 如何发起异步操作
-kill
-kill 命令 eg：kill -signum pid
-int kill(pid,signum);
+kill //kill这个命令可以用来发送指令
+kill 命令 eg：kill -signum pid  pid可以由ps指令得到（我用来定位进程的命令有两个：top （实时）和 ps 命令）
+int kill(pid,signum);//signum 就是上面的这些宏定义的信号
 pid>0 发给pid进程
 pid=0 发给当前进程组的所有进程
 pid=-1 发送给所有进程
@@ -84,13 +84,13 @@ ualarm
 以useconds为单位，第一个参数为第一次产生时间，第二个参数为间隔产生
 
 setitimer 定时器
-
-int getitimer(int which, struct itimerval curr_value);
+//更高级的定时器设置
+int getitimer(int which, struct itimerval curr_value);//获取时间
 int setitimer(int which, const struct itimerval new_value,
-struct itimerval *old_value);
+struct itimerval *old_value);//设置时间，which 的参数有ITIMER_REAL和ITIMER_VIRTUAL
 Linux会给进程提供三个定时器
-ITIMER_REAL:以逝去时间递减
-ITIMER_VIRTUAL：
+ITIMER_REAL:以逝去时间递减--发出SIGALRM信号 使用signal(SIGALRM,回调函数)捕捉--setitimer(ITIMER_REAL, &value, &ovalue); 
+ITIMER_VIRTUAL：  --发出SIGVTALRM信号 使用signal(SIGVTALRM,回调函数)捕捉--setitimer(ITIMER_VIRTUAL, &value2, &ovalue);
 
         struct itimerval {
                struct timeval it_interval; /* next value */
@@ -101,6 +101,9 @@ ITIMER_VIRTUAL：
                time_t      tv_sec;         /* seconds */
                suseconds_t tv_usec;        /* microseconds */
            };
+		   
+		   
+		   
 安装和捕获信号
 忽略信号
 自定义捕捉函数
@@ -108,7 +111,7 @@ ITIMER_VIRTUAL：
 signal
 signal(signum,handler)
 
-kill -SIGUSR1 pid
+kill -SIGUSR1 pid 
 SIGKILL SIGSTOP 不能够被安装
 
 忽略信号
@@ -117,12 +120,12 @@ signal(signum,SIG_IGN)
 sigaction对象
 
 int sigaction(int signum, const struct sigaction *act,
-                     struct sigaction *oldact);
+                     struct sigaction *oldact);//sigaction为安装一个信号，sigaction比signal的互斥性要好
 
 struct sigaction {
-       void     (*sa_handler)(int);
-       void     (*sa_sigaction)(int, siginfo_t *, void *);
-       sigset_t   sa_mask;
+       void     (*sa_handler)(int);二选一
+       void     (*sa_sigaction)(int, siginfo_t *, void *);二选一（推荐）
+       sigset_t   sa_mask;//信号掩码 --信号屏蔽集合
        int        sa_flags;  //会影响信号接受特殊标志
        void     (*sa_restorer)(void);
    };
