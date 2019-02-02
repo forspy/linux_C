@@ -52,7 +52,7 @@ int main(int argc,char **argv)
     aiocb_list[0] = &rd;
 
     //进行异步读操作
-    ret = aio_read(&rd);
+    ret = aio_read(&rd);//系统调用
     if(ret < 0)
     {
         perror("aio_read");
@@ -61,7 +61,7 @@ int main(int argc,char **argv)
 
     printf("我要开始等待异步读事件完成\n");
     //阻塞等待异步读事件完成
-    ret = aio_suspend(aiocb_list,MAX_LIST,NULL);
+    ret = aio_suspend(aiocb_list,MAX_LIST,NULL);//跟select和epoll机制很像
 	
 	
     //获取异步读返回值

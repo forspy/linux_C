@@ -52,7 +52,7 @@ int main(int argc,char **argv)
     }
 
     //获得异步写的返回值
-    ret = aio_return(&wr);
+    ret = aio_return(&wr);//ret为真实写进去的长度
     printf("\n\n\n返回值为:%d\n",ret);
 
     return 0;
