@@ -38,3 +38,6 @@ pid_t getsid(pid_t pid)//获得会话号
 进程用户属性：
 每一个进程都具有UID EUID SUID 用户ID 有效用户ID 炒鸡用户ID
 例子需要root权限执行
+
+fork创建进程的方法
+fork()==-1表示创建进程失败，==0子进程 >0父进程
