@@ -6,8 +6,8 @@ int main()
 	int uid,euid,suid;
 	getresuid(&uid,&euid,&suid);
 	printf("uid=%d,euid=%d,suid=%d\n",uid,euid,suid);
-	printf("after setuid(501)\n");
-	printf("return=%d\n",setuid(501));
+	printf("after setuid(0)\n");
+	printf("return=%d\n",setuid(0));
 	uid=-1;euid=-1;suid=-1;
 	getresuid(&uid,&euid,&suid);
 	printf("uid=%d,euid=%d,suid=%d\n",uid,euid,suid);
