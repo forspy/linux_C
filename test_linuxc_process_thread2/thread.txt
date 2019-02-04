@@ -1,2 +1,13 @@
 通过chmod u+s 提权 使文件具有s属性
-s属性表示当前用户具有root用户的权限
+s属性表示当前用户具有文件拥有者的权限，如果文件拥有者为root，那么就具有root用户的权限
+which passwd 查看passwd的文件路径 
+使用 ls -l /usr/bin/passwd  发现passwd的权限为-rwsr-xr-x 1 root root 59640 1月  25  2018 /usr/bin/passwd ，说明passwd具有s属性
+使用getppid()后the current program's ppid is 3375 通过ps查看当前进程的父进程为bash 3375 pts/0    00:00:00 bash   表示shell是父进程，
+这个就是shell  forspy@forspy1:~/linuxc/test_linuxc_process_thread2$
+ps -A查看所有进程
+运行getpid()程序the current program's pid is 4219
+
+进程的创建
+pid_t fork(void);
+
+进程的代码执行

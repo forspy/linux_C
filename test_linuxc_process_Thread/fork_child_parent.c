@@ -9,12 +9,10 @@ int main(void)
 	
 	else if(pid==0)
 	{
-		pid
 		printf("in the child process\n");
 	}
 	else
 	{
-		pid
 		printf("in the parent process\n");
 	}
 	return 0;
