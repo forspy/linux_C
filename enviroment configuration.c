@@ -190,7 +190,8 @@ sshd    6528 root    4u  IPv6  98744      0t0  TCP *:ssh (LISTEN)
 
 //在scrt中
 sudo su（必须在root权限下才能在根目录下创建文件夹
-cd /
+cd /   表示去根目录
+cd ~   去用户目录
 mkdir work
 然后修改work文件夹的权限
 chown -R forspy:forspy work/  (切换属主，使他在普通用户下也能执行)
