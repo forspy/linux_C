@@ -28,3 +28,5 @@ service date_mine
 //启动命令 选一个
 service xinetd start
 service xinetd restart
+
+可以使用nc去连 127.0.0.1 5859 就能启动该程序
