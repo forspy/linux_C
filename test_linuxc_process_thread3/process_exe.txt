@@ -1,0 +1,30 @@
+exec系列函数能够使用进程的资源去创建一个新的程序
+当我们创建了一个进程之后，通常将子进程替换成新的进程映象，这可以用exec系列的函数来进行。
+获得环境变量路径 cat /etc/environment
+
+回收进程资源
+exit(0);正常的退出码是0
+return 0;
+子进程退出了，但是父进程没有使用wait()来等待子进程的退出，这时候子进程就会变为僵死进程
+父进程释放了，但子进程还没释放，这时候子进程就会变为孤儿进程，由系统接管
+
+运行起来需要终端的叫阻塞进程
+运行起来不需要终端的叫守护进程(不需要等待终端信号)
+
+开机启动某进程
+vi /etc/xinetd.d/      xinetd.d需要自己创建
+service date_mine
+{
+	disable		= no
+	type		= UNLISTED
+	socket_type	= stream
+	protocol	= tcp
+	user		= chandler
+	wait		= no
+	port 		= 5859
+	bind		= 127.0.0.1
+	server		= /bin/date       守护进程要启动的文件
+}
+//启动命令 选一个
+service xinetd start
+service xinetd restart
