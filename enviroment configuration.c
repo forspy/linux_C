@@ -195,6 +195,9 @@ mkdir work
 然后修改work文件夹的权限
 chown -R forspy:forspy work/  (切换属主，使他在普通用户下也能执行)
 然后ls -l会发现使用者和创建者都会是普通用户而不是root
+
+如果host主机的地址变了，需要删掉链接重新建立会话
+建立方式：主机填地址  用户名：填linux用户名
 (scrt中的中文乱码在选项里面-会话选项-外观-字符编码选择UTF-8)
 //远程操作sftp，进行传输(wind vsftp filezilla)
 使用filezilla
