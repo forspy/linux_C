@@ -1,0 +1,103 @@
+进程间通信
+#system v ipc //基于内核IPCS机制  shell ipcs可查看
+ipcs 
+* key:通信双方约定好的KEY值，32位的int数据
+* id :系统会为IPC分配一个唯一的ID，通信双方都需要知道ID才能使用当前IPC方法，创建者会返回当前ID值，
+```
+ 	#include <sys/types.h>
+  	#include <sys/ipc.h>
+	key_t ftok(const char *pathname, int proj_id);//返回一个key值
+    .  proj_id 
+    key 31-24 proj_id 低8位
+	key 23-16 st_dev属性的低8位
+	key 15-0  st_ino属性的低16位
+
+```
+* 对象 （消息队列、共享内存段、信号量） 可以使用shell  ipcs查看
+
+附录：“消息”是在两台计算机间传送的数据单位。消息可以非常简单，例如只包含文本字符串；也可以更复杂，可能包含嵌入对象。
+消息被发送到队列中。“消息队列”是在消息的传输过程中保存消息的容器。消息队列管理器在将消息从它的源中继到它的目标时充当中间人。
+队列的主要目的是提供路由并保证消息的传递；如果发送消息时接收者不可用，消息队列会保留消息，直到可以成功地传递它。
+
+以一个停车场的运作为例。简单起见，假设停车场只有三个车位，一开始三个车位都是空的。这时如果同时来了五辆车，看门人允许其中三辆直接进入，然后放下车拦，
+剩下的车则必须在入口等待，此后来的车也都不得不在入口处等待。这时，有一辆车离开停车场，看门人得知后，打开车拦，放入外面的一辆进去，如果又离开两辆，则又可以放入两辆，如此往复。
+在这个停车场系统中，车位是公共资源，每辆车好比一个线程，看门人起的就是信号量的作用。
+
+抽象的来讲，信号量的特性如下：信号量是一个非负整数（车位数），所有通过它的线程/进程（车辆）都会将该整数减一（通过它当然是为了使用资源），当该整数值为零时，所有试图通过它的线程
+都将处于等待状态。在信号量上我们定义两种操作： Wait（等待） 和 Release（释放）。当一个线程调用Wait操作时，它要么得到资源然后将信号量减一，要么一直等下去（指放入阻塞队列），
+直到信号量大于等于一时。Release（释放）实际上是在信号量上执行加操作，对应于车辆离开停车场，该操作之所以叫做“释放”是因为释放了由信号量守护的资源。
+
+* 拥有者及权限对象
+```
+struct ipc_perm
+{
+	__kernel_key_t	key;   ipc key值
+	__kernel_uid_t	uid;   拥有者UID root权限 uid为0
+	__kernel_gid_t	gid;   拥有着组 ID
+	__kernel_uid_t	cuid;  创建者的UID
+	__kernel_gid_t	cgid;  创建者组的UID
+	__kernel_mode_t	 mode;   读写权限
+	unsigned short	seq;
+};
+
+```
+
+## XSI消息队列
+* 对象：
+	struct msqid_ds//消息队列对象
+```
+	struct msqid_ds {
+	   struct ipc_perm msg_perm;     /* Ownership and permissions */消息队列的权限
+	   time_t          msg_stime;    /* Time of last msgsnd(2) */最后一次发送的时间
+	   time_t          msg_rtime;    /* Time of last msgrcv(2) */最后一次接收的时间
+	   time_t          msg_ctime;    /* Time of last change */最后一次修改的时间
+	   unsigned long   __msg_cbytes; /* Current number of bytes in
+	                                    queue (nonstandard) */当前队列大小
+	   msgqnum_t       msg_qnum;     /* Current number of messages
+	                                    in queue */当前队列长度 
+	   msglen_t        msg_qbytes;   /* Maximum number of bytes
+	                                    allowed in queue */最大消息内容大小
+	   pid_t           msg_lspid;    /* PID of last msgsnd(2) */
+	   pid_t           msg_lrpid;    /* PID of last msgrcv(2) */
+	   struct msg*     msg_first; //消息对象 指向链表头  
+	   struct msg*     msg_last; //消息对象  指向链表尾
+	};
+	
+	消息对象包括 消息类型 消息大小 消息内容指针 下一个消息
+
+```
+消息队列的优点和缺点：
+优点：
+消息队列是两个不相关进程之间传输数据的有效渠道
+独立于收发进程存在
+避免命名管道的同步以及阻塞问题是全双工的（单工、半双工问题）
+缺点：
+与命名管道一样，每个数据块都有一个最大长度限制
+队列长度有上限
+
+//面向对象编程口诀
+* 创建对象：
+* 设置对象：
+* 使用对象：
+
+
+创建对象：
+int msgget(key_t key,int msgflg);  (ftok生成的KEY值，权限)  返回一个int类型的msgid
+设置对象：
+int msgctl(int msqid, int cmd, struct msqid_ds *buf);
+cmd:
+IPC_STAT 获取ipc_perm参数
+IPC_SET 设置ipc_perm参数
+IPC_RMID 删除
+IPC_INFO 获取ipc信息
+MSG_INFO
+MSG_STAT
+使用对象：
+  1. 发送
+  int msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg);
+  2. 接收
+  ssize_t msgrcv(int msqid, void *msgp, size_t msgsz, long msgtyp,
+                      int msgflg); msgtyp表示接收的类型1.0表示接受消息队列中的第一条消息 2.>0接受第一条msgtyp的消息 3.<0 同理
+					  
+每msgsnd发送一个消息，msg_qnum就会+1
+每msgrcv接收一个消息，msg_qnum就会-1
