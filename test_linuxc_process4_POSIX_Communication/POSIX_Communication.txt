@@ -25,7 +25,7 @@ int mkfifo(const char* pathname, mode_t mode);
 shell命令下创建fifo文件 mknod 文件名 p
 shell下  echo 要输入的内容  fifo文件名    注：这样随着echo进程的结束会立即返回
 一端使用cat fifo文件名阻塞等待读取 另开一个终端 shell下  echo 要输入的内容 >  fifo文件名    注：这样就实现了任意两个进程之间的通信
-man echo查看用法
+man echo查看用法 e 查看下一行 f查看下一页 b返回上一页
 
 单工数据传输只支持数据在一个方向上传输；在同一时间只有一方能接受或发送信息，不能实现双向通信，举例：电视，广播。
 
