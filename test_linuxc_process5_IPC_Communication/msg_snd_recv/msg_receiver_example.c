@@ -13,12 +13,13 @@ int main(int argc,char *argv[])
 	key=ftok(argv[1],100);
 
 	int msgid;
-	msgid=msgget(key,IPC_CREAT|0600);
+		msgid=msgget(key,IPC_CREAT|0666);
 
 	pid_t pid;
 	pid=fork();
 	if(pid==0)	//子进程
 	{
+		
 		while(1)
 		{
 			sleep(1);
