@@ -1,0 +1,3 @@
+---- pthread_cond_wait Matches (2 in 2 files) ----
+Ad_thread.c (f:\linux-lec\ДњТы\thread_pool_server\abaddon-master\src):            pthread_cond_wait(queue_cond, queue_mutex);
+Ad_thread_pool.c (f:\linux-lec\ДњТы\thread_pool_server\abaddon-master\src):                pthread_cond_wait(COND(THREAD_QUEUE(thread_pool)), MUTEX(THREAD_QUEUE(thread_pool)));
