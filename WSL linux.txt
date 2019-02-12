@@ -1,0 +1,71 @@
+控制面板-程序和功能-启用或关闭Windows功能-适用于Windows的Linux子系统 勾选
+在mirosoft store里面搜索linux 选用ubuntu
+查看ssh服务是否启动
+打开"终端窗口"，输入"sudo ps -e |grep ssh"-->回车-->有sshd,说明ssh服务已经启动，如果没有启动，输入"sudo service ssh start"-->回车-->ssh服务就会启动。
+重新启动ssh
+sudo service ssh --full-restart
+----------
+错误提示：
+
+Could not  load host key: /etc/ssh/ssh_host_rsa_key
+
+Could not  load host key: /etc/ssh/ssh_host_ecdsa_key
+
+Could not  load host key: /etc/ssh/ssh_host_ed25519_key
+
+sshd: no hostkeys available  -- exiting.
+-------------
+解决方法：
+ssh-keygen -q -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N ''
+ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
+ssh-keygen -t dsa -f /etc/ssh/ssh_host_ed25519_key -N ''
+
+
+连接host 127.0.0.1
+输入用户名forspy
+
+// 编辑配置文件
+// vim /etc/ssh/sshd_config
+ 默认的是22，但是windows有自己的ssh服务用的也是22端口，修改一下
+PasswordAuthentication yes
+Port 2222
+AllowUsers forspy
+
+clion设置WSL为编译环境
+1.setting-toolchains
+2.credentials里面设置ssh  端口2222 host：127.0.0.1 用户名forspy 密码：
+3.需要apt install cmake
+4.需要apt install g++
+5.需要apt install gdb
+----------
+CMAKE的更新：
+注意调整setting 里面的cmake为WSL的cmake  待验证？目前可以使用vs的cmake    apt-get update
+cmake官网 https://cmake.org/ 按照cmake-3.14.0-rc1.tar.gz这种后缀下载（wget https://cmake.org/files/v3.10/cmake-3.10.3.tar.gz 这样也行注意替换版本号）
+第三步：解压cmake源文件 并将源文件放入/tmp/文件下(如果装在forspy下注意在clion setting里面调整cmake的路径因为可能有两个cmake  主cmake在usr/bin/cmake里面 自己安装的在自己安装的路径下)
+
+cd /tmp
+tar -zxvf cmake-3.10.3.tar.gz
+
+
+第四步：编译安装cmake
+
+cd cmake-3.10.3
+./configure
+make
+make install
+
+
+第五步：安装完成之后 再次查看当前cmake版本
+
+cmake --version
+--------------------- 
+作者：jartin 
+来源：CSDN 
+原文：https://blog.csdn.net/jartins/article/details/80041858 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+-----------
+Windows文件在/mnt 下面
+
+2.卸载旧版本下的cmake
+
+apt-get autoremove cmake
