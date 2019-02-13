@@ -69,3 +69,16 @@ Windows文件在/mnt 下面
 2.卸载旧版本下的cmake
 
 apt-get autoremove cmake
+
+
+CLION的使用 注意Windows下使用clion编译linux程序需要先启动WSL，并开启SSH  
+在CMAKE add_executable(project_linuxc_thread main.c test1.cpp ad_http_request.c)加载需要的.c或者.cpp文件
+批量添加需要学一些CMAKE
+批量：
+cmake_minimum_required(VERSION 3.13)
+project(project_linuxc_thread)
+aux_source_directory(. DIRSRCS)
+set(CMAKE_CXX_STANDARD 14)
+add_executable(project_linuxc_thread ${DIRSRCS})
+
+多层CMAKE见https://blog.csdn.net/ktigerhero3/article/details/70313350/
