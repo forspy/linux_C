@@ -167,29 +167,29 @@ int ad_server_listen(unsigned short int server_port)
     request_queue = ad_queue_construct(&request_mutex, &add_request_cond);//创建任务池对象。其实本质也是线程池，返回的是任务队列
     thread_pool = ad_thread_pool_construct(&pool_mutex, &add_thread_cond, request_queue);//创建线程池对象 ，需要传入任务池对象，返回的是池
 
-    server_socket = socket(AF_INET, SOCK_STREAM, 0);
+    server_socket = socket(AF_INET, SOCK_STREAM, 0);//创建socket
     server_len = sizeof(server_addr);
-
+//初始化地址
     /* Initialize and configure server socket address */
     bzero(&server_addr, server_len);
     server_addr.sin_port = htons(server_port);
     server_addr.sin_family = AF_INET; 
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY); 
 
-    if((bind(server_socket, (struct sockaddr *) &server_addr, server_len)) == -1)
+    if((bind(server_socket, (struct sockaddr *) &server_addr, server_len)) == -1)//绑定
     {
         perror("Abaddon HTTP server couldn't start");
         return EXIT_FAILURE;
     }
 
-    listen(server_socket, AD_SERVER_CONNECTION_BACKLOG);
+    listen(server_socket, AD_SERVER_CONNECTION_BACKLOG);//监听
     printf("Abaddon HTTP server is listening on port %d\n", server_port);
 
     while (!ad_server_terminating)
     {
         client_len = sizeof(client_addr);
-        client_socket = accept(server_socket, (struct sockaddr *) &client_addr, &client_len);
-
+        client_socket = accept(server_socket, (struct sockaddr *) &client_addr, &client_len);//接收
+//上面是阻塞式地等待客户信息，这里可以使用epoll框架
         if (client_socket == -1) 
         { 
             if(errno == EINTR) { /* The server received SIGINT */ }
@@ -200,19 +200,19 @@ int ad_server_listen(unsigned short int server_port)
             client_ptr = malloc(sizeof(int));
            *client_ptr = client_socket;
             //基于接收到的客户端监听句柄，创建新的任务结点，并且将任务节点入队
-            ad_queue_push(request_queue, (void *)client_ptr); 
+            ad_queue_push(request_queue, (void *)client_ptr); //根据收到的client_socket形成一个个任务节点压入任务队列中
 
             /* Signals the thread pool to allow resizing of the pool */
             pthread_cond_signal(COND(THREAD_QUEUE(thread_pool)));
         }
     }
     
-    close(server_socket);
+    close(server_socket);//关闭socket
 
-    ad_queue_destruct(request_queue);
-    ad_thread_pool_destruct(thread_pool);
+    ad_queue_destruct(request_queue);//释放任务池队列
+    ad_thread_pool_destruct(thread_pool);//释放线程池
     
     printf("Abaddon HTTP server terminated successfully\n");
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS;//退出
 }

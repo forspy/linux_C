@@ -47,10 +47,10 @@ void ad_thread_handle_requests_hook(ad_thread_request *request)
     int jmp_status;
 
     int client = VOIDPTR_TO_INT(request);//Õâ¸öclient¾ÍÏñsocketÖĞµÄfd¾ä±ú
-    free(request);
+    free(request);//ÒòÎªÈÎÎñÒÑ¾­±»Ïß³ÌÈ¡³öÀ´ÁË£¬ËùÒÔ¿ÉÒÔfreeµô£¬freeµôµÄÖ»ÊÇ½ÚµãÖĞµÄdata×Ö¶Î£ ÓÖÒòÎª£¬data×Ö¶ÎµÄµØÖ·¾ÍÊÇ½ÚµãµÄÍ·µØÖ·£¬ËùÒÔÊÇfreeÕû¸ö½Úµã
 
     /* Simulating try catch */
-    jmp_status = setjmp(error_jmp);
+    jmp_status = setjmp(error_jmp);//²¶×½Òì³£
 
     if(jmp_status != 1) {ad_server_answer(client, error_jmp);}//ÕæÕıÈÎÎñÂß¼­´¦Àíº¯Êı
 }

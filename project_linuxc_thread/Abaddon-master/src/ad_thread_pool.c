@@ -96,7 +96,7 @@ typedef struct {
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);//将分离属性PTHREAD_CREATE_DETACHED设置到attr属性集里面，使得线程独立
     pthread_create(new_thread, &attr, ad_thread_handle_requests, (void *) parameters);//做好准备工作以后创建线程创建，ad_thread_handle_requests为回调函数parameters为传入函数
 
-    ad_queue_push(THREAD_QUEUE(thread_pool), (void *) new_thread);
+    ad_queue_push(THREAD_QUEUE(thread_pool), (void *) new_thread);//把形成的新的线程封装到thread_pool线程池中的THREAD_QUEUE线程队列中
 }
 
 /* Pops a thread from the thread queue of the thread pool.
