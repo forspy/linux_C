@@ -1,0 +1,36 @@
+									Linux http 协议
+1.客户端如何向服务器请求web
+2.服务器如何回复给客户端数据
+
+
+
+工作流程：
+1.在TCP层上构建链接  80端口  socket
+2.客户端套接字。客户往自己的套接字发送HTTP请求消息
+3.服务器从自己的套接字接收HTTP请求消息,也往自己的套接字发送HTTP响应消息。
+4.关闭TCP 连接
+
+
+URL：http://www.cxsecurity.com/issue/WLB-2017030090
+	http://192.168.1.1:80/issue/WLB-2017030090
+持久链接
+	同步
+	并发
+	
+非持久链接 
+	http://www.chinaitlab.com:80/somepath/index.html
+	
+http请求消息
+　GET /somedir/page.html HTTP/1.1
+  Host:www.chinaitlab.com
+  Connection:close
+  User-agent:Mozilla/4.0　
+  Accept-language:zh-cn/r/
+  
+  
+  方法:GET POST HEAD.
+  CGI：
+	
+  
+  
+  

@@ -1,0 +1,52 @@
+#   HTTP协议解析
+
+## 概念
+* 超文本传输协议:承载的数据类型多
+* 持久性链接和非持久性链接类型
+
+
+## 协议分析
+1. 静态分析
+
+HTTP解析：
+   请求行： 由3个字段组成：方法字段、URL字段、HTTP版本 并且以/r/n结尾 
+
+
+2. 动态分析
+
+## http协议实现流程
+1.利用url中的主机信息，进行主机tcp连接
+2.利用url中的路径和参数等信息，对主机进行文件访问(http请求)
+3.服务器根据请求路径，从数据库取出文件
+4.服务器将取出的文件打包为http响应发回客户端
+5.客户端接收响应数据
+
+
+http://www.sxtyu.com:80/news/index.html
+
+## http协议解析
+```
+GET /somedir/page.html HTTP/1.1/r/n　　
+Host:www.chinaitlab.com/r/n　
+Connection:close/r/n　
+User-agent:Mozilla/4.0/r/n　　
+Accept-language:zh-cn/r/n
+
+GET:http类型 
+	post get head 
+url：路径
+
+$root/somedir/page.html 
+
+　HTTP/1.1 200 0K　　Connectlon:close　　Date: Thu, 13 Oct 2005 03:17:33 GMT　　Server: Apache/2.0.54 (Unix)　　Last—Nodified:Mon,22 Jun 1998 09;23;24 GMT　　Content—Length:682l　　Content—Type:text/html	
+
+```
+
+
+　HTTP/1.1 200 0K　  状态行
+　Connectlon:close　
+　Date: Thu, 13 Oct 2005 03:17:33 GMT　
+　Server: Apache/2.0.54 (Unix)　
+　Last—Nodified:Mon,22 Jun 1998 09;23;24 GMT　
+　Content—Length:682l　
+　Content—Type:text/html

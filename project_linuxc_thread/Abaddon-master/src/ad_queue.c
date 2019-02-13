@@ -33,7 +33,7 @@ ad_queue *ad_queue_construct(ad_queue_mutex *mutex, ad_queue_cond *cond_var)//创
 void ad_queue_push(ad_queue *queue, void *data)
 {
 
-    ad_node *node = malloc(sizeof(ad_node)); 
+    ad_node *node = malloc(sizeof(ad_node)); //创建一个节点
     
     DATA(node) = data;
     NEXT(node) = NULL;
@@ -56,7 +56,7 @@ void ad_queue_push(ad_queue *queue, void *data)
     pthread_mutex_unlock(MUTEX(queue));
     
     /* New node in the queue to be handled. Send the signal */
-    pthread_cond_signal(COND(queue));
+    pthread_cond_signal(COND(queue));//触发条件变量后，使得线程池中的管理线程或者线程池中的线程节点去处理
 }
 
 /* Pops the oldest node pointer residing in the queue.
