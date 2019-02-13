@@ -1,0 +1,117 @@
+										HTTP 协议
+HTTP协议 是应用层协议 
+tcp										
+一.HTTP请求和应答的步骤
+HTTP是基于TCP协议的短连接，一般为以下四步：
+
+第一步、client通过tcp协议连接到server端；
+
+第二步、client给server发送请求request（client一个连接只给server发一次request请求）；
+
+第三步、server给client回复reponse；
+
+第四步、双方断开连接
+
+主机：端口号 === 域名
+主机：IP地址 
+端口号：80 http
+
+非持久连接和持久连接
+
+
+8.8.8.8 www.cnblogs.com
+URI
+URL
+ggjucheng/archive/2012/01/08/2316692.html
+标识符  路径
+
+
+
+ggjucheng/archive/2012/01/08/2316692.html
+
+http 请求
+	
+http 响应
+
+GET /somedir/page.html HTTP/1.1
+方法：GET POST HEAD 
+ GET  请求 POST 
+ 
+ POST 响应
+ HEAD 
+
+注：（client如果想再次给server发送request那么就必须再次连接到server）
+
+对于http请求最简单一个模型
+
+1、客户端发送http请求中GET后面一般跟一个文件名
+
+2、服务端会把客户端get的文件下发下去
+
+二.HTTP协议结构介绍
+HTTP请求（字符串)解析出GET / 后面的内容如果为空，则sever会把默认的index.html 发给浏览器，浏览器接收到index.html 会解析html然后查看需要的图片等其它文件，会开线程再向服务器发http请求。
+
+如在浏览器中输入服务器的IP地址
+http://172.19.198.109
+
+firefox浏览器发的http请求消息内容
+
+GET / HTTP/1.1
+Host: 172.19.198.109
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:37.0) Gecko/20100101 Firefox/37.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Cookie: CNZZDATA5902315=cnzz_eid%3D1568106884-1431221304-%26ntime%3D1431221304
+Connection: keep-alive
+If-Modified-Since: Thu, 07 May 2015 00:13:52 GMT
+If-None-Match: "554aae40-207"
+Cache-Control: max-age=0
+
+这里可以看到GET /  后面HTTP/1.1 之间的内容为空，此时，server就将默认的东西发给浏览器，比如index.html
+
+输入：http://172.19.198.109/index.html
+
+GET /index.html HTTP/1.1
+Host: 172.19.198.109
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:37.0) Gecko/20100101 Firefox/37.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Cookie: CNZZDATA5902315=cnzz_eid%3D1568106884-1431221304-%26ntime%3D1431221304
+Connection: keep-alive
+If-Modified-Since: Thu, 07 May 2015 00:13:52 GMT
+If-None-Match: "554aae40-207"
+Cache-Control: max-age=0
+
+可以看到GET / 的内容为index.html，这也是就是浏览器向server发出的请求，server解析出请求后将index.html 按照如下的格式回复给浏览器。
+http 回复内容格式：
+
+a.消息头（固定格式字符串）
+
+b.消息体（二进制内容）图片，html 文件或者其他文件
+c.消息尾（固定格式字符串）
+
+a.消息头内容格式：（字符串）HTTP/1.0 200 OK\n
+
+Content-Type: image/x-icon\n（标识给客户端回复的消息体是什么类型的文件，消息体是衣服图像文件，图像是icon格式的）
+
+Transfer-Encoding: chunked\n
+
+Connection: Keep-Alive\n
+
+Accept-Ranges:bytes\n
+
+Content-Length:2550\n \n（消息体的长度，单位：字节）
+
+b.消息体：（二进制内容）具体要给客户端发送的文件二进制流
+
+c.消息尾（字符串）：\n\n(两个换行符)
+
+三.阻塞Socket多线程并发程序设计
+因为HTPP都是基于短连接的，所以不可能出现服务端同时存在大量client连接的情况发生，
+所以采用多线程，并不会导致一个进程当中同时存在大量的线程情况发生，
+阻塞的socket多线程还可以增加每一个客户端连接响应的速度。 
+对于多线程并发，即使其中某一个连接消耗了大量的时间，也不会影响其他的连接。
+如果采用阻塞的多线程并发设计，当主线程不关心具体子线程的退出状态，
+那么所有的线程可以使用可分离状态，让这些线程自生自灭。这里就设置为线程的可分离状态。
