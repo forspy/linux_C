@@ -37,6 +37,7 @@ clion设置WSL为编译环境
 3.需要apt install cmake
 4.需要apt install g++
 5.需要apt install gdb
+装不上可以使用 apt-get update
 ----------
 CMAKE的更新：
 注意调整setting 里面的cmake为WSL的cmake  待验证？目前可以使用vs的cmake    apt-get update
