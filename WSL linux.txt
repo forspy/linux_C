@@ -42,7 +42,7 @@ clion设置WSL为编译环境
 CMAKE的更新：
 注意调整setting 里面的cmake为WSL的cmake  待验证？目前可以使用vs的cmake    apt-get update
 cmake官网 https://cmake.org/ 按照cmake-3.14.0-rc1.tar.gz这种后缀下载（wget https://cmake.org/files/v3.10/cmake-3.10.3.tar.gz 这样也行注意替换版本号）
-第三步：解压cmake源文件 并将源文件放入/tmp/文件下(如果装在forspy下注意在clion setting里面调整cmake的路径因为可能有两个cmake  主cmake在usr/bin/cmake里面 自己安装的在自己安装的路径下)
+第三步：解压cmake源文件 并将源文件放入/tmp/文件下(如果装在forspy下注意在clion setting里面调整cmake的路径因为可能有两个cmake  主cmake在usr/bin/cmake里面 自己安装的在自己安装的路径下比如 /usr/local/bin/cmake)
 
 cd /tmp
 tar -zxvf cmake-3.10.3.tar.gz
