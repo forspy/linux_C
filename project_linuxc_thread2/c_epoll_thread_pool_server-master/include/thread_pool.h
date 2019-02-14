@@ -7,7 +7,7 @@
 
 extern int MAX_TPOOL_THREAD_NUM;
 
-/* 要执行的任务链表 */
+//要执行的任务链表--任务池
 typedef struct tpool_work {
     void*               (*routine)(void*,SQL_STRUCT*);         /* 任务函数 */
     void                *arg;                               /* 传入任务函数的参数 */
@@ -21,7 +21,7 @@ typedef struct tpool {
     tpool_work_t    *queue_head;                /* 线程链表 */
     pthread_mutex_t queue_lock;                    
     pthread_cond_t  queue_ready;
-}tpool_t;
+}tpool_t;//线程池对象
 
 //extern MYSQL* my_connections;
 

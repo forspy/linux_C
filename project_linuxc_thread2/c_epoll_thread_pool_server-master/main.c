@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
     pthread_t memcheck_thread_tid;
 //    pthread_t tid;
 
-    my_malloc_debug_init();
+    my_malloc_debug_init();//创建debug日志
 
     signal(SIGSEGV, WidebrightSegvHandler); // SIGSEGV      11       Core    Invalid memory reference
     signal(SIGABRT, WidebrightSegvHandler); // SIGABRT       6       Core    Abort signal from
@@ -183,16 +183,16 @@ int main(int argc, char *argv[])
           fprintf (stderr, "Usage: %s [config file]\n", argv[0]);  
           exit (EXIT_FAILURE);  
     }
-    load_config(argv[0],argv[1]);
+    load_config(argv[0],argv[1]);//载入配置文件config.txt,解析配置文件
     if(need_deamon)
     {
-        init_daemon();
+        init_daemon();//守护进程
     }
     
-    init_log();
+    init_log();//初始化日志进程
     
-    init_SQL();
-    tpool_create(MAX_TPOOL_THREAD_NUM);
+    init_SQL();//初始化mysql
+    tpool_create(MAX_TPOOL_THREAD_NUM);//创建线程池
     
     srand( (unsigned int)time(0) );
 

@@ -33,10 +33,10 @@ thread_routine(void *arg)
     
     //此处使用长连接连接数据库
     //存在问题:某些网络未按照TCP/IP中的老化时间，这里又没有设置定时心跳，可能导致操作数据库时连接超时。
-    connect_new_SQL(&(current_sqls.my_connection));
+    connect_new_SQL(&(current_sqls.my_connection));//传入mysql对象在数据库中进行增删查改
     
     while(1) {
-        /* 如果线程池没有被销毁且没有任务要执行，则等待 */
+        //如果线程池没有被销毁且没有任务要执行，则等待
         pthread_mutex_lock(&tpool->queue_lock);
         while(!tpool->queue_head && !tpool->shutdown) {
             pthread_cond_wait(&tpool->queue_ready, &tpool->queue_lock);
@@ -49,16 +49,14 @@ thread_routine(void *arg)
         tpool->queue_head = tpool->queue_head->next;
         pthread_mutex_unlock(&tpool->queue_lock);
  
-        work->routine(work->arg,&current_sqls);
+        work->routine(work->arg,&current_sqls);//回调函数去执行work这个弹出来的节点
         FREE(work);
     }
     
     return NULL;   
 }
  
-/*
- * 创建线程池 
- */
+//创建线程池 
 int
 tpool_create(int max_thr_num)
 {
@@ -72,7 +70,7 @@ tpool_create(int max_thr_num)
         threadIndex[i] = i;
     }
  
-    tpool = (tpool_t *)calloc(1, sizeof(tpool_t));
+    tpool = (tpool_t *)calloc(1, sizeof(tpool_t));//calloc从已经分配好的malloc里面取空间，效率上更快
     if (!tpool) {
         DEBUGPRINT;
         printf("%s: calloc failed\n", __FUNCTION__);
@@ -102,7 +100,7 @@ tpool_create(int max_thr_num)
         exit(1);
     }
     for (i = 0; i < max_thr_num; ++i) {
-        if (pthread_create(&tpool->thr_id[i], NULL, thread_routine, (void*)&threadIndex[i]) != 0){
+        if (pthread_create(&tpool->thr_id[i], NULL, thread_routine, (void*)&threadIndex[i]) != 0){//创建线程，并使用线程回调函数
             printf("%s:pthread_create failed, errno:%d, error:%s\n", __FUNCTION__, 
                 errno, strerror(errno));
             exit(1);
