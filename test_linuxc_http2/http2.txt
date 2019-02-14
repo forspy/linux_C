@@ -4,3 +4,5 @@ dns代理可以免校园网流量查探（注意数据泄密）
 常用的代理shadowsocks socks5 vpn
 
 http式一种协议：超文本传输协议Hyper Text  Transfer  Protocol
+
+ctrl +s可以拷贝网页上的素材作为前端
