@@ -6,3 +6,5 @@ dns代理可以免校园网流量查探（注意数据泄密）
 http式一种协议：超文本传输协议Hyper Text  Transfer  Protocol
 
 ctrl +s可以拷贝网页上的素材作为前端
+CLION-view下面的toolbar勾上可以实现回退
+ctrl+alt+b查看函数定义

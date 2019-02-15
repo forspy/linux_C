@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/httpserver.dir/pub.c.o CMakeFiles/httpserver.dir/server.c.o CMakeFiles/httpserver.dir/thread_work.c.o  -o httpserver 

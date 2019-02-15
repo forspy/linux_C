@@ -1,0 +1,3 @@
+/mnt/e/clion_code/httpserver/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/mnt/e/clion_code/httpserver/cmake-build-debug/CMakeFiles/httpserver.dir
+/mnt/e/clion_code/httpserver/cmake-build-debug/CMakeFiles/edit_cache.dir

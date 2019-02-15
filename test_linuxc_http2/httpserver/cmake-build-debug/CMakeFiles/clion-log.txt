@@ -1,0 +1,4 @@
+/usr/local/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /mnt/e/clion_code/httpserver
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /mnt/e/clion_code/httpserver/cmake-build-debug
