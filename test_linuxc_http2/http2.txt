@@ -8,3 +8,7 @@ http式一种协议：超文本传输协议Hyper Text  Transfer  Protocol
 ctrl +s可以拷贝网页上的素材作为前端
 CLION-view下面的toolbar勾上可以实现回退
 ctrl+alt+b查看函数定义
+流程：基于TCP的连接
+1.建立socket连接--三次握手--客户端确认连接connect，服务器确认收到accept
+2.客户将url发给服务器---服务器解析url，取到相对路径--根据路径读取本地网页文件到内存buff--封装为http响应--写入socket
+//一个http响应包分为两部分--http的响应头，HTTP的数据体
