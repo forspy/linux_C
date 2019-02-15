@@ -1,11 +1,11 @@
-¿ØÖÆÃæ°å-³ÌĞòºÍ¹¦ÄÜ-ÆôÓÃ»ò¹Ø±ÕWindows¹¦ÄÜ-ÊÊÓÃÓÚWindowsµÄLinux×ÓÏµÍ³ ¹´Ñ¡
-ÔÚmirosoft storeÀïÃæËÑË÷linux Ñ¡ÓÃubuntu
-²é¿´ssh·şÎñÊÇ·ñÆô¶¯
-´ò¿ª"ÖÕ¶Ë´°¿Ú"£¬ÊäÈë"sudo ps -e |grep ssh"-->»Ø³µ-->ÓĞsshd,ËµÃ÷ssh·şÎñÒÑ¾­Æô¶¯£¬Èç¹ûÃ»ÓĞÆô¶¯£¬ÊäÈë"sudo service ssh start"-->»Ø³µ-->ssh·şÎñ¾Í»áÆô¶¯¡£
-ÖØĞÂÆô¶¯ssh
+æ§åˆ¶é¢æ¿-ç¨‹åºå’ŒåŠŸèƒ½-å¯ç”¨æˆ–å…³é—­WindowsåŠŸèƒ½-é€‚ç”¨äºWindowsçš„Linuxå­ç³»ç»Ÿ å‹¾é€‰
+åœ¨mirosoft storeé‡Œé¢æœç´¢linux é€‰ç”¨ubuntu
+æŸ¥çœ‹sshæœåŠ¡æ˜¯å¦å¯åŠ¨
+æ‰“å¼€"ç»ˆç«¯çª—å£"ï¼Œè¾“å…¥"sudo ps -e |grep ssh"-->å›è½¦-->æœ‰sshd,è¯´æ˜sshæœåŠ¡å·²ç»å¯åŠ¨ï¼Œå¦‚æœæ²¡æœ‰å¯åŠ¨ï¼Œè¾“å…¥"sudo service ssh start"-->å›è½¦-->sshæœåŠ¡å°±ä¼šå¯åŠ¨ã€‚
+é‡æ–°å¯åŠ¨ssh
 sudo service ssh --full-restart
 ----------
-´íÎóÌáÊ¾£º
+é”™è¯¯æç¤ºï¼š
 
 Could not  load host key: /etc/ssh/ssh_host_rsa_key
 
@@ -15,39 +15,40 @@ Could not  load host key: /etc/ssh/ssh_host_ed25519_key
 
 sshd: no hostkeys available  -- exiting.
 -------------
-½â¾ö·½·¨£º
+è§£å†³æ–¹æ³•ï¼šsudo suä¸‹è¿è¡Œ
 ssh-keygen -q -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N ''
 ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_ed25519_key -N ''
 
 
-Á¬½Óhost 127.0.0.1
-ÊäÈëÓÃ»§Ãûforspy
+è¿æ¥host 127.0.0.1
+è¾“å…¥ç”¨æˆ·åforspy
 
-// ±à¼­ÅäÖÃÎÄ¼ş
+// ç¼–è¾‘é…ç½®æ–‡ä»¶
 // vim /etc/ssh/sshd_config
- Ä¬ÈÏµÄÊÇ22£¬µ«ÊÇwindowsÓĞ×Ô¼ºµÄssh·şÎñÓÃµÄÒ²ÊÇ22¶Ë¿Ú£¬ĞŞ¸ÄÒ»ÏÂ
+ é»˜è®¤çš„æ˜¯22ï¼Œä½†æ˜¯windowsæœ‰è‡ªå·±çš„sshæœåŠ¡ç”¨çš„ä¹Ÿæ˜¯22ç«¯å£ï¼Œä¿®æ”¹ä¸€ä¸‹
 PasswordAuthentication yes
 Port 2222
 AllowUsers forspy
 
-clionÉèÖÃWSLÎª±àÒë»·¾³
+clionè®¾ç½®WSLä¸ºç¼–è¯‘ç¯å¢ƒ
 1.setting-toolchains
-2.credentialsÀïÃæÉèÖÃssh  ¶Ë¿Ú2222 host£º127.0.0.1 ÓÃ»§Ãûforspy ÃÜÂë£º
-3.ĞèÒªapt install cmake
-4.ĞèÒªapt install g++
-5.ĞèÒªapt install gdb
+2.credentialsé‡Œé¢è®¾ç½®ssh  ç«¯å£2222 hostï¼š127.0.0.1 ç”¨æˆ·åforspy å¯†ç ï¼š
+3.éœ€è¦apt install cmake
+4.éœ€è¦apt install g++
+5.éœ€è¦apt install gdb
+è£…ä¸ä¸Šå¯ä»¥ä½¿ç”¨ apt-get update
 ----------
-CMAKEµÄ¸üĞÂ£º
-×¢Òâµ÷Õûsetting ÀïÃæµÄcmakeÎªWSLµÄcmake  ´ıÑéÖ¤£¿Ä¿Ç°¿ÉÒÔÊ¹ÓÃvsµÄcmake    apt-get update
-cmake¹ÙÍø https://cmake.org/ °´ÕÕcmake-3.14.0-rc1.tar.gzÕâÖÖºó×ºÏÂÔØ£¨wget https://cmake.org/files/v3.10/cmake-3.10.3.tar.gz ÕâÑùÒ²ĞĞ×¢ÒâÌæ»»°æ±¾ºÅ£©
-µÚÈı²½£º½âÑ¹cmakeÔ´ÎÄ¼ş ²¢½«Ô´ÎÄ¼ş·ÅÈë/tmp/ÎÄ¼şÏÂ(Èç¹û×°ÔÚforspyÏÂ×¢ÒâÔÚclion settingÀïÃæµ÷ÕûcmakeµÄÂ·¾¶ÒòÎª¿ÉÄÜÓĞÁ½¸öcmake  Ö÷cmakeÔÚusr/bin/cmakeÀïÃæ ×Ô¼º°²×°µÄÔÚ×Ô¼º°²×°µÄÂ·¾¶ÏÂ)
+CMAKEçš„æ›´æ–°ï¼š
+æ³¨æ„è°ƒæ•´setting é‡Œé¢çš„cmakeä¸ºWSLçš„cmake  å¾…éªŒè¯ï¼Ÿç›®å‰å¯ä»¥ä½¿ç”¨vsçš„cmake    apt-get update
+cmakeå®˜ç½‘ https://cmake.org/ æŒ‰ç…§cmake-3.14.0-rc1.tar.gzè¿™ç§åç¼€ä¸‹è½½ï¼ˆwget https://cmake.org/files/v3.10/cmake-3.10.3.tar.gz è¿™æ ·ä¹Ÿè¡Œæ³¨æ„æ›¿æ¢ç‰ˆæœ¬å·ï¼‰
+ç¬¬ä¸‰æ­¥ï¼šè§£å‹cmakeæºæ–‡ä»¶ å¹¶å°†æºæ–‡ä»¶æ”¾å…¥/tmp/æ–‡ä»¶ä¸‹(å¦‚æœè£…åœ¨forspyä¸‹æ³¨æ„åœ¨clion settingé‡Œé¢è°ƒæ•´cmakeçš„è·¯å¾„å› ä¸ºå¯èƒ½æœ‰ä¸¤ä¸ªcmake  ä¸»cmakeåœ¨usr/bin/cmakeé‡Œé¢ è‡ªå·±å®‰è£…çš„åœ¨è‡ªå·±å®‰è£…çš„è·¯å¾„ä¸‹æ¯”å¦‚ /usr/local/bin/cmake)
 
 cd /tmp
 tar -zxvf cmake-3.10.3.tar.gz
 
 
-µÚËÄ²½£º±àÒë°²×°cmake
+ç¬¬å››æ­¥ï¼šç¼–è¯‘å®‰è£…cmake
 
 cd cmake-3.10.3
 ./configure
@@ -55,30 +56,34 @@ make
 make install
 
 
-µÚÎå²½£º°²×°Íê³ÉÖ®ºó ÔÙ´Î²é¿´µ±Ç°cmake°æ±¾
+ç¬¬äº”æ­¥ï¼šå®‰è£…å®Œæˆä¹‹å å†æ¬¡æŸ¥çœ‹å½“å‰cmakeç‰ˆæœ¬
 
 cmake --version
---------------------- 
-×÷Õß£ºjartin 
-À´Ô´£ºCSDN 
-Ô­ÎÄ£ºhttps://blog.csdn.net/jartins/article/details/80041858 
-°æÈ¨ÉùÃ÷£º±¾ÎÄÎª²©Ö÷Ô­´´ÎÄÕÂ£¬×ªÔØÇë¸½ÉÏ²©ÎÄÁ´½Ó£¡
------------
-WindowsÎÄ¼şÔÚ/mnt ÏÂÃæ
 
-2.Ğ¶ÔØ¾É°æ±¾ÏÂµÄcmake
+-----------
+Windowsæ–‡ä»¶åœ¨/mnt ä¸‹é¢
+
+2.å¸è½½æ—§ç‰ˆæœ¬ä¸‹çš„cmake
 
 apt-get autoremove cmake
 
 
-CLIONµÄÊ¹ÓÃ ×¢ÒâWindowsÏÂÊ¹ÓÃclion±àÒëlinux³ÌĞòĞèÒªÏÈÆô¶¯WSL£¬²¢¿ªÆôSSH  
-ÔÚCMAKE add_executable(project_linuxc_thread main.c test1.cpp ad_http_request.c)¼ÓÔØĞèÒªµÄ.c»òÕß.cppÎÄ¼ş
-ÅúÁ¿Ìí¼ÓĞèÒªÑ§Ò»Ğ©CMAKE
-ÅúÁ¿£º
+CLIONçš„ä½¿ç”¨ æ³¨æ„Windowsä¸‹ä½¿ç”¨clionç¼–è¯‘linuxç¨‹åºéœ€è¦å…ˆå¯åŠ¨WSLï¼Œå¹¶å¼€å¯SSH  
+åœ¨CMAKE add_executable(project_linuxc_thread main.c test1.cpp ad_http_request.c)åŠ è½½éœ€è¦çš„.cæˆ–è€….cppæ–‡ä»¶
+æ‰¹é‡æ·»åŠ éœ€è¦å­¦ä¸€äº›CMAKE
+æ‰¹é‡ï¼š
+c++ç‰ˆcmakeï¼š
 cmake_minimum_required(VERSION 3.13)
 project(project_linuxc_thread)
 aux_source_directory(. DIRSRCS)
 set(CMAKE_CXX_STANDARD 14)
 add_executable(project_linuxc_thread ${DIRSRCS})
 
-¶à²ãCMAKE¼ûhttps://blog.csdn.net/ktigerhero3/article/details/70313350/
+å¤šå±‚CMAKEè§https://blog.csdn.net/ktigerhero3/article/details/70313350/
+cç‰ˆcmake
+cmake_minimum_required(VERSION 3.13)
+project(httpserver C)
+aux_source_directory(. DIRSRCS)
+set(CMAKE_C_STANDARD 99)
+
+add_executable(httpserver ${DIRSRCS})
