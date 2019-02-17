@@ -43,7 +43,7 @@ SHA1：这种加密算法固定长度是160位
 
 ## HTTPS简介
 每个数据包都有不同的对称加密密钥
-在加密过程中需要有证书--即公钥(数字签名是公钥单项加密的结果)
+在加密过程中需要有证书--即公钥
 在通信的过程中，需要有证书交互过程，即客户端有服务器的公钥，服务器有客户端的私钥
 ### ssl协议功能
 * 保证传输数据的保密性
@@ -89,3 +89,67 @@ getopt 参数解析
 编译ssl程序时
 * 安装ssl的库
 * -lopenssl
+
+## HTTPS简介
+### ssl加密流程 
+* 每个数据包都有不同的对称加密密钥 ---随机生成
+* 如何获得对方的公钥 
+* 证书：
+	 1. 公钥
+	 bob发给Alice
+数据 -->单项加密-
+			---->（将上面的结果）做对称加密=对称密文A
+				----->（对 对称加密的密钥）做非对称加密+对称密文A 发送给Alice(Bob使用alice的公钥对 对称加密的密钥 做非对称加密)，alic收到后使用私钥解密非对称加密后得到对称加密的密钥 再做对称加密 然后比对单项加密的结果 一致就通过认证
+证书的颁发就是bob获取alice公钥的过程	
+* 证书包含：双方的公钥C+数字签名(数字签名是公钥单项加密的结果)
+	 在通信的过程中，需要有证书交互过程，即客户端有服务器的公钥
+			
+1.## 自建根证书  利用openssl库进行加密
+.key ：通过传入的口令，按照系统的算法生成的私钥
+openssl genrsa -des3 -out root.key （使用openssl里面的genrsa工具生成私钥，根据口令比如123456生成2048位密钥）
+.csr格式：证书签名请求（证书请求文件），含有公钥信息，certificate signing request的缩写
+openssl req -new -key root.key -out root.csr
+.crt格式：证书文件，certificate的缩写  ----------最终的证书（私钥.key+证书请求文件.csr）
+openssl x509 -req -days 3650 -sha1 -extensions v3_ca -signkey root.key -in root.csr -out root.crt
+.crl格式：证书吊销列表，Certificate Revocation List的缩写
+.pem格式：用于导出，导入证书时候的证书的格式，有证书开头，结尾的格式
+
+2.通过自建根证书 创建服务器证书
+生成服务器证书，并用自建根证书进行签名
+ 创建服务器证书密钥：server.key
+
+openssl genrsa -out server.key 2048
+
+（去除key文件的口令：openssl rsa -in server.key -out server.key）
+
+创建服务器证书申请文件：server.csr
+
+openssl req -new -key server.key -out server.csr
+
+创建服务证书：server.crt
+
+openssl x509 -req -days 730 -sha1 -extensions v3_req -CA root.crt -CAkey root.key -CAcreateserial -in server.csr -out server.crt
+
+## openssl工具库用法：
+查看openssl组件是否安装
+rpm -ql openssl
+/usr/lib64/libcrypt.so 
+/usr/bin/openssl --- 加密
+openssl version     
+
+对文件进行加密测试输出到fstab.des3
+openssl enc -des3 -in fstab -e -out fstab.des3
+
+对文件进行解密
+openssl enc -des3 -in fstab.des3 -d -out fstab
+
+对文件进行单项加密 
+openssl dgst -md5 hello.j
+
+### ssl协议功能
+* 保证传输数据的保密性
+* 保证传输数据的完整性  rc4 
+* 实现通信双方的互相身份认证-----非对称加密
+
+
+
