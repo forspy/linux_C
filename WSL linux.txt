@@ -1,7 +1,7 @@
 控制面板-程序和功能-启用或关闭Windows功能-适用于Windows的Linux子系统 勾选
 在mirosoft store里面搜索linux 选用ubuntu
 查看ssh服务是否启动
-打开"终端窗口"，输入"sudo ps -e |grep ssh"-->回车-->有sshd,说明ssh服务已经启动，如果没有启动，输入"sudo service ssh start"-->回车-->ssh服务就会启动。
+打开"终端窗口"，输入"sudo ps -A |grep ssh"-->回车-->有sshd,说明ssh服务已经启动，如果没有启动，输入"sudo service ssh start"-->回车-->ssh服务就会启动。
 重新启动ssh
 sudo service ssh --full-restart
 ----------
