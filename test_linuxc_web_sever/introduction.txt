@@ -1,0 +1,20 @@
+main函数流程
+1.日志文件
+2.启动参数
+3.信号处理
+4.配置解析模块
+5.守护进程模块
+6.https模块/http模块
+https模块：
+初始化加密库
+accept客户端
+绑定ssl与tcp
+web访问控制模块
+7.cgi模块
+通用网关接口（Common Gateway Interface/CGI）是一种重要的互联网技术，可以让一个客户端，
+从网页浏览器向执行在网络服务器上的程序请求数据。CGI描述了服务器和请求处理程序之间传输数据的一种标准。
+CGI的工作方式，从Web服务器的角度看，是在特定的位置（比如：http://www.example.com/wiki.cgi）定义了可以运行CGI程序。
+当收到一个匹配URL的请求，相应的程序就会被调用，并将客户端发送的数据作为输入。
+程序的输出会由Web服务器收集，并加上合适的档头，再发送回客户端。
+
+注：github下载的时候可能需要去掉clion环境下的cmake-build-debug文件夹和CMakeLists.txt文件，因为路径不一样
