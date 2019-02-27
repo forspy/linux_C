@@ -80,6 +80,12 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(project_linuxc_thread ${DIRSRCS})
 
 多层CMAKE见https://blog.csdn.net/ktigerhero3/article/details/70313350/
+cmake_minimum_required(VERSION 3.13)
+project(hello_world C)
+aux_source_directory(. DIRSRCS)
+set(CMAKE_C_STANDARD 99)
+
+add_executable(hello_world ${DIRSRCS} include main_haed.h)#include为头文件加内文件 main_haed.h为源文件内的头文件，让头文件调用的
 c版cmake
 cmake_minimum_required(VERSION 3.13)
 project(httpserver C)
