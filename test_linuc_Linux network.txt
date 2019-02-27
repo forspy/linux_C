@@ -1,8 +1,8 @@
 Linux网络编程
 1.网络协议
 物理层：网卡/硬件
-链路层：以太网驱动程序 ARP RARP
-IP层： IPV4/IPV6 ICMP
+数据链路层：以太网驱动程序 ARP RARP
+网络层： IPV4/IPV6 ICMP
 传输层：UDP TCP 
 socket抽象层：
 应用层：HTTP FTP SMTP POP3...QQ等用户进程
