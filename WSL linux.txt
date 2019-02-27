@@ -93,3 +93,12 @@ aux_source_directory(. DIRSRCS)
 set(CMAKE_C_STANDARD 99)
 
 add_executable(httpserver ${DIRSRCS})
+
+//加库后的版本
+cmake_minimum_required(VERSION 3.13)
+project(${PROJECT_NAME} C)
+aux_source_directory(. DIRSRCS)
+set(CMAKE_C_STANDARD 99)
+
+add_executable(${PROJECT_NAME} ${DIRSRCS})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} pthread.so)#新版的gcc一般在cmake里面使用pthread（.so可以不加）${PROJECT_NAME}指的是当前项目名称
