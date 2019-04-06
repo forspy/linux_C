@@ -1,3 +1,4 @@
+（若没有此功能 参考：打开windows10开发人员模式，打开步骤为：设置-->更新和安全-->针对开发人员，点击开发人员模式打开即可，具体如图：）
 控制面板-程序和功能-启用或关闭Windows功能-适用于Windows的Linux子系统 勾选
 在mirosoft store里面搜索linux 选用ubuntu
 查看ssh服务是否启动
